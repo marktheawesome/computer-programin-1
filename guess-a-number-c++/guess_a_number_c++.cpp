@@ -44,7 +44,7 @@ int play_again()
 
 };
 
-int pick_number()
+int pick_number(low,high)
 {
     cout<<("I'm thinking of a num from " low ' to ' + high + '.');
     return (rand()%20)+1;
