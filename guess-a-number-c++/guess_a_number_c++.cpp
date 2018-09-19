@@ -44,28 +44,30 @@ int play_again()
 
 };
 
-int pick_number()
+int pick_number(int low, int high)
 {
-    cout<<("I'm thinking of a num from " low ' to ' + high + '.');
+ 
+    cout<<("I'm thinking of a num from " + to_string( low )  + " to " + to_string( high )  + ".");
     return (rand()%20)+1;
 }
 
-int pick_range()
-{
-    int low = rand() % 100 + 1;
-    int high = rand() % 100 + 1;
+// int pick_range()
+// {
+//     int low = rand() % 100 + 1;
+//     int high = rand() % 100 + 1;
 
-    if (low > high)
-        low, high = high, low;
-    cout <<("I'm thinking of a number from " + low + ' to ' + high + '.');
-    return (low, high);
-};
+//     if (low > high)
+//         low, high = high, low;
+//     cout <<("I'm thinking of a number from " + low + ' to ' + high + '.');
+//     return (low, high);
+// };
 
 int get_guess()
 {
     while (1)
     {
-        cout<<("take a guess");
+        cout<<("");
+        cout<<("Take a guess:");
         int num;
         cin>>num;
         return num;
@@ -85,6 +87,7 @@ int check_guess(int rand, int guess)
 
     else
         return 0;
+    return 0;
 };
 
 
@@ -98,7 +101,7 @@ void show_result(int got_it)
 
 void play()
 {
-    int rand = pick_number();
+    int rand = pick_number(low,high);
     int got_it = 0;
     int tries = 0;
 
@@ -107,19 +110,24 @@ void play()
         int guess = get_guess();
         got_it = check_guess(rand, guess);
         ++ tries;
-    show_result(got_it);
 
     }
+    show_result(got_it);
 };
 
-int playing = 1;
+
 int main() 
 {
-    cout << "Hello World!";
+    //cout << "Hello World!";
+    start_screen ();
+    int playing = 1;
 
-    while (playing == 1)
+    while (playing != 0)
+    {
          play();
-         playing =play_again();
+         int playing = play_again();
+         return playing;
+    };
 
     end_screen();
 
