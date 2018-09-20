@@ -30,12 +30,12 @@ def get_guess(current_low, current_high):
     average = current_added//2
     return average
 
-def pick_number():
+def pick_number(low,high):
     """
     Ask the player to think of a number between low and high.
     Then  wait until the player presses enter.
     """
-    print ("pick a number between 1 and 1000")
+    print ("pick a number between " + str (low) + " and " + str (high) + " .")
     input ()
 
 
@@ -47,7 +47,7 @@ def check_guess(guess):
              0 if the guess was correct
              1 if the guess was too high
     """
-    print("I guess " +str(guess) + ("."))
+    print("Is the number,  " +str(guess) + ("?"))
     print("Was I too high or too low or correct? (h/l/c)")
     put = input()
     if put == "h":
@@ -85,7 +85,7 @@ def play():
     current_high = high
     check = -1
     
-    pick_number()
+    pick_number(low,high)
     
     while check != 0:
         guess = get_guess(current_low, current_high)
