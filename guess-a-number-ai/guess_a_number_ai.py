@@ -19,6 +19,12 @@ def show_start_screen():
     *  Guess a Number A.I!  *
     *************************
     ''')
+
+def player_name():
+    print ("What is your name?")
+    name = input()
+    return name 
+
 def show_credits():
     pass
     
@@ -30,12 +36,12 @@ def get_guess(current_low, current_high):
     average = current_added//2
     return average
 
-def pick_number():
+def pick_number(name):
     """
     Ask the player to think of a number between low and high.
     Then  wait until the player presses enter.
     """
-    print ("pick a number between 1 and 1000")
+    print (name + " pick a number between 1 and 1000")
     input ()
 
 
@@ -62,11 +68,11 @@ def check_guess(guess):
     else:
         print ("invalid input.") 
 
-def show_result():
+def show_result(name):
     """
     Says the result of the game. (The computer might always win.)
     """
-    print("I won!!!!!!!")
+    print(name + " Guess what. I won!!!!!!! ")
 
 def play_again():
     while True:
@@ -79,13 +85,13 @@ def play_again():
         else:
             print("I don't understand. Please enter 'y' or 'n'.")
 
-def play():
+def play(name):
     
     current_low = low
     current_high = high
     check = -1
     
-    pick_number()
+    pick_number(name)
     
     while check != 0:
         guess = get_guess(current_low, current_high)
@@ -98,16 +104,17 @@ def play():
             # adjust current_high
             current_high = guess - 1 
 
-    show_result()
+    show_result(name)
 
 
 # Game starts running here
 show_start_screen()
+name = player_name ()
 
 playing = True
 
 while playing:
-    play()
+    play(name)
     playing = play_again()
 
 show_credits()
