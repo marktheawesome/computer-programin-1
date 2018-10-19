@@ -38,6 +38,7 @@ int play_again()
 
         else if(again == 'n')
             return 0;
+            
         else;
             cout<<("Invalid input. Please enter y or n.");
     }
@@ -133,3 +134,5 @@ int main()
 
     return 0;
 }
+
+

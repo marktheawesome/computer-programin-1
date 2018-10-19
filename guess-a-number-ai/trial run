@@ -1,0 +1,88 @@
+[mark@Noelles-MBP computer-programin-1]$ python -u "/home/mark/computer-programin-1/guess-a-number-ai/guess_a_number_ai.py"
+  File "/home/mark/computer-programin-1/guess-a-number-ai/guess_a_number_ai.py", line 51
+    <<<<<<< HEAD
+     ^
+SyntaxError: invalid syntax
+[mark@Noelles-MBP computer-programin-1]$ python -u "/home/mark/computer-programin-1/guess-a-number-ai/guess_a_number_ai.py"
+
+
+                                                           _                  ___  _____
+                                                          | |                / _ \|_   _|
+  __ _ _   _  ___  ___ ___    __ _   _ __  _   _ _ __ ___ | |__   ___ _ __  / /_\ \ | |
+ / _` | | | |/ _ \/ __/ __|  / _` | | '_ \| | | | '_ ` _ \| '_ \ / _ \ '__| |  _  | | |
+| (_| | |_| |  __/\__ \__ \ | (_| | | | | | |_| | | | | | | |_) |  __/ |    | | | |_| |_
+ \__, |\__,_|\___||___/___/  \__,_| |_| |_|\__,_|_| |_| |_|_.__/ \___|_|    \_| |_/\___/
+  __/ |
+ |___/
+
+
+
+
+
+What is your name?
+MArk
+MArk pick a number between 1 and 1000. I'm willing to bet I'll get it in 10 or less.
+
+MArk I guess 500. This is try number 1
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 750. This is try number 2
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 875. This is try number 3
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 938. This is try number 4
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 969. This is try number 5
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 985. This is try number 6
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 993. This is try number 7
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 997. This is try number 8
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 999. This is try number 9
+Was I too high or too low or correct? (h/l/c)
+l
+You must have done something wrong. I've gessed the most logical wa possible. It impossible that I've lost.
+Would you like to play again? (y/n) y
+MArk pick a number between 1 and 1000. I'm willing to bet I'll get it in 10 or less.
+
+MArk I guess 500. This is try number 1
+Was I too high or too low or correct? (h/l/c)
+h
+MArk I guess 250. This is try number 2
+Was I too high or too low or correct? (h/l/c)
+h
+MArk I guess 125. This is try number 3
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 187. This is try number 4
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 218. This is try number 5
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 234. This is try number 6
+Was I too high or too low or correct? (h/l/c)
+l
+MArk I guess 242. This is try number 7
+Was I too high or too low or correct? (h/l/c)
+j
+invalid input.
+MArk I guess 242. This is try number 8
+Was I too high or too low or correct? (h/l/c)
+h
+MArk I guess 238. This is try number 9
+Was I too high or too low or correct? (h/l/c)
+c
+You must have done something wrong. I've gessed the most logical wa possible. It impossible that I've lost.
+Would you like to play again? (y/n) n
+This Game was made by Mark.
+[mark@Noelles-MBP computer-programin-1]$
