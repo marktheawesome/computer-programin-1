@@ -1,0 +1,96 @@
+[mark@localhost computer-programin-1]$ python -u "/home/mark/computer-programin-1/hangman-master/hangman.py"
+
+        888
+        888
+        888
+        88888b.  8888b. 88888b.  .d88b. 88888b.d88b.  8888b. 88888b.
+        888 "88b    "88b888 "88bd88P"88b888 "888 "88b    "88b888 "88b
+        888  888.d888888888  888888  888888  888  888.d888888888  888
+        888  888888  888888  888Y88b 888888  888  888888  888888  888
+        888  888"Y888888888  888 "Y88888888  888  888"Y888888888  888
+                                    888
+                                Y8b d88P
+                                "Y88P"
+
+
+----------
+Enter a letter:b
+------b---
+Enter a letter:c
+c-----b---
+Enter a letter:h
+ch----b---
+Enter a letter:r
+chr---b---
+Enter a letter:o
+chro--boo-
+Enter a letter:m
+chrom-boo-
+Enter a letter:e
+chromeboo-
+Enter a letter:k
+chromebook
+you win!
+Would you like to play again? (y/n) y
+----------
+Enter a letter:b
+------b---
+Enter a letter:o
+---o--boo-
+Enter a letter:k
+---o--book
+Enter a letter:c
+c--o--book
+Enter a letter:h
+ch-o--book
+Enter a letter:r
+chro--book
+Enter a letter:m
+chrom-book
+Enter a letter:e
+chromebook
+you win!
+Would you like to play again? (y/n) y
+------
+Enter a letter:r
+------
+Enter a letter:o
+----o-
+Enter a letter:n
+----on
+Enter a letter:p
+p---on
+Enter a letter:y
+py--on
+Enter a letter:t
+pyt-on
+Enter a letter:h
+python
+you win!
+Would you like to play again? (y/n) y
+---
+Enter a letter:1
+---
+Enter a letter:2
+---
+Enter a letter:3
+---
+Enter a letter:4
+---
+Enter a letter:5
+---
+Enter a letter:6
+---
+YOU SUCK!!!!!!!!!!
+Would you like to play again? (y/n) n
+
+            | | | |               | |
+            | |_| |__   __ _ _ __ | | ___   _  ___  _   _
+            | __| '_ \ / _` | '_ \| |/ / | | |/ _ \| | | |
+            | |_| | | | (_| | | | |   <| |_| | (_) | |_| |
+            \__|_| |_|\__,_|_| |_|_|\_\__, |\___/ \__,_|
+                                        __/ |
+                                        |___/
+
+this was made by Mark Gyomory on 10/23/2018
+[mark@localhost computer-programin-1]$
