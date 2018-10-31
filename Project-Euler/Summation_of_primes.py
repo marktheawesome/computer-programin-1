@@ -1,7 +1,10 @@
 import math
+import time 
+
+start = time.time() 
 
 num = 1
-total = 1 
+total = 0 
 limit = 2000000
 
 def prime_check(num):
@@ -11,12 +14,19 @@ def prime_check(num):
     while i <= n:
 
         if num % i == 0:    
-            return False
+            return 0 
     
         i += 1
         
-    return True
+    return num 
 
-while num < limit:
+#for num in range(0,limit,2):
+while num <= limit:
+    X1 =  prime_check(num)
+    total = total + X1
+    num +=2
 
-    
+
+elapsed = time.time() - start
+
+print(total+1, elapsed)

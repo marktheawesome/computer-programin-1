@@ -1,0 +1,27 @@
+done = False
+
+while not done:
+    # Event processing (React to key presses, mouse clicks, etc.)
+    ''' for now, we'll just check to see if the X is clicked '''
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+
+    # Game logic (Check for collisions, update points, etc.)
+    ''' leave this section alone for now ''' 
+
+    # Drawing code (Describe the picture. It isn't actually drawn yet.)
+    screen.fill(BLUE)
+    draw_fence(1210,720)
+    draw_grass()
+    draw_house()
+    pygame.draw.circle(screen, BLACK, [0,0], 200)
+    draw_cloud(x/2, y/4)
+    draw_cloud(x-x*(3/13), y/3)
+    draw_cloud(x*(4/13), y/4)
+    draw_stars()
+    draw_black_hole(r)
+    r+=1
+    
+   
