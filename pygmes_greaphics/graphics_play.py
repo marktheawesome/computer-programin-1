@@ -102,7 +102,7 @@ while not done:
     draw_fence(1210,720)
     draw_grass()
     draw_house()
-    pygame.draw.circle(screen, BLACK, [0,0], 200)
+    
     draw_cloud(x/2, y/4)
     draw_cloud(x-x*(3/13), y/3)
     draw_cloud(x*(4/13), y/4)
