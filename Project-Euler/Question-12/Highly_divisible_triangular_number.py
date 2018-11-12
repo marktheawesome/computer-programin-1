@@ -26,10 +26,11 @@ import time
 import math
 
 start = time.time()
+index = 1
+number_of_prime = 0 
+last_prime = 0 
 
-n = 1
-a = 1 
-c = 0 
+
 def triangular_number(n):
     tri_num = 0 
     while n > 0:
@@ -37,29 +38,54 @@ def triangular_number(n):
         n-=1
     return tri_num
 
-def number_of_devisors(n):
-    
-    num = n
-    i = 1
-    num_devisors = 0
-    while i <= num and num_devisors <= 500:
+#def number_of_devisors(n):
 
-        if num % i == 0:    
-            num_devisors +=1
+def prime_factors(n):
+    i = 2
+    factors = []
+    while i * i <= n:
+        if n % i:
+            i += 1
+        else:
+            n //= i
+            factors.append(i)
+    if n > 1:
+        factors.append(n)
+    return factors
+
+def multiplyList(myList) : 
+      
+    # Multiply elements one by one 
+    result = 1
+    for x in myList: 
+         result = result * x  
+    return result  
+      
+for index in range(100000):
+    # expont_of_current_prime = 0
+    # expoent_of_previous_prime = 1 
+    # number_of_devisors = 0
+    prime_exponents = []
+
+    tri_num = triangular_number(index) #finds the triangular number and stores it in tri_number
+    prime__factors = prime_factors(tri_num) # finds the prime factors and sotes it in prime__factors
     
-        i += 1
-    return num_devisors
+    ''' need to see the exponets of each prime in order to get the nmber of devisors'''
     
-while c <= 500:
-    b = triangular_number(a)
-    c = number_of_devisors(b)
-    if c == 500:
+    for prime in prime__factors:
+        if prime != last_prime:
+            number_of_prime = prime__factors.count(prime)
+            
+            expont_of_current_prime = number_of_prime + 1 
+            prime_exponents.append(expont_of_current_prime)
+            # number_of_devisors = expont_of_current_prime * expoent_of_previous_prime  
+            # expoent_of_previous_prime = expont_of_current_prime 
+        last_prime = prime 
+     
+    i = multiplyList(prime_exponents)
+    if i >= 500:
         break
 
-    print(b)
-    a+=1 
-
-# print(b,c)
-
+    print(tri_num, prime__factors,prime_exponents)
 elapsed = time.time() - start
-print(b,c, elapsed)
+print(tri_num, elapsed)
