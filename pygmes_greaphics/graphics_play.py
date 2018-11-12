@@ -17,7 +17,7 @@ pygame.init()
 
 #make objects
 '''stars'''
-num_stars = 800
+num_stars = 900
 stars = []
 for i in range(num_stars):
     x2 = random.randrange(0,x)
