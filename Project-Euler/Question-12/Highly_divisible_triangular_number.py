@@ -89,3 +89,4 @@ for index in range(100000):
     #print(tri_num, prime__factors,prime_exponents)
 elapsed = time.time() - start
 print(tri_num, elapsed)
+
