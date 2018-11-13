@@ -1,2 +1,1 @@
-owing = True
-        r 
+stars

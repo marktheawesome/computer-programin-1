@@ -16,15 +16,15 @@ growning = True
 pygame.init()
 
 #make objects
-'''stars'''
-num_stars = 1000
-stars = []
-for i in range(num_stars):
+'''Snow'''
+num_snow = 1000
+snow_drops = []
+for i in range(num_snow):
     x2 = random.randrange(0,x)
     y2 = random.randrange(-y,y)
     d = random.randrange(1,6)
     s = [x2,y2,d,d]
-    stars.append(s)
+    snow_drops.append(s)
 
 '''clouds'''
 num_clouds = 10
@@ -40,8 +40,8 @@ for i in range (num_clouds):
 def rect(screen,color,X1,Y1,X2,Y2):
     pygame.draw.rect(screen, color, [X1, Y1, X2, Y2])
 
-def draw_stars():
-    for s in stars:
+def draw_snow():
+    for s in snow_drops:
         pygame.draw.ellipse(screen, WHITE,s)
 
 def draw_cloud(loc,cloud_color):
@@ -140,7 +140,7 @@ while not done:
             c[0] = random.randrange(-x,-100)
             c[1] = random.randrange(0,math.ceil(y/3))
 
-    for s in stars:
+    for s in snow_drops:
         s[1]+= 1
 
         if s[1] > y:
@@ -160,7 +160,7 @@ while not done:
     for c in clouds:
         draw_cloud(c , BLACK)
             
-    draw_stars()
+    draw_snow()
     draw_black_hole(r,colour1)
 
     if growning:
