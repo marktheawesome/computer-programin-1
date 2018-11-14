@@ -1,4 +1,5 @@
-
+import time 
+start = time.time()
 million = 4000000
 total = 0 
 a = 1
@@ -15,4 +16,5 @@ while a+b <= million:
         total = total + c 
     b,a = c,b
 
-print (total)
+elapsed = time.time() - start
+print (total,elapsed)

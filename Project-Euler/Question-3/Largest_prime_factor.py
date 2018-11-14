@@ -5,7 +5,8 @@
 # Python3 code to find largest prime 
 # factor of number 
 import math 
-
+import time 
+start = time.time()
 # A function to find largest prime factor 
 def maxPrimeFactors (n): 
 	
@@ -36,4 +37,5 @@ def maxPrimeFactors (n):
 
 
 n = 600851475143
-print(maxPrimeFactors(n)) 
+elapsed = time.time() - start
+print(maxPrimeFactors(n),elapsed) 

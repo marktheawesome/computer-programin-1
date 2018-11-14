@@ -1,5 +1,7 @@
 n = 0 
 sum_of_the_squares_total = 0
+import time 
+start = time.time()
 
 def sum_of_the_squares(n):
     sum_of_the_squares_total = 0 
@@ -22,5 +24,5 @@ sum_of_the_squares_total = sum_of_the_squares(n)
 square_of_the_sum_of_total = square_of_the_sum_of(n)
 
 difference = square_of_the_sum_of_total - sum_of_the_squares_total
-
-print(difference)
+elapsed = time.time() - start
+print(difference,elapsed)

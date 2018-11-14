@@ -1,5 +1,7 @@
+import time 
 # number_1 = 3
 # number_2 = 5 
+start = time.time()
 current_number = 1
 total = 0
 upper_number = 1000
@@ -16,4 +18,5 @@ def meat(current_number,total,upper_number):
 #main
 
 total = meat(current_number,total,upper_number)
-print(total)
+elapsed = time.time() - start
+print(total,elapsed)
