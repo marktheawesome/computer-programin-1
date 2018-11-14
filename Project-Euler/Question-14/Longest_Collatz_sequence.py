@@ -21,7 +21,7 @@ start = time.time()
 start_number = 0 
 length = 0 
 length_of_previous_sequence = 0 
-
+longer_tree_number = 0 
 def collatz_formula(n):
     l = 0 
     while n > 1:
@@ -34,7 +34,12 @@ def collatz_formula(n):
     return l 
 
 for start_number in range(1000000):
-    
-
+    length = collatz_formula(start_number)
+    if length > length_of_previous_sequence:
+        length_of_previous_sequence = length
+        longer_tree_number = start_number
+        print(length,start_number)
 
 elapsed = time.time() - start
+
+print(longer_tree_number, elapsed)
