@@ -3,7 +3,8 @@ import random
 import math
 # Initialize game engine
 pygame.init()
-
+# useful vars
+night = False
 # Window
 x = 800
 y = 600
@@ -16,11 +17,7 @@ pygame.display.set_caption(TITLE)
 clock = pygame.time.Clock()
 refresh_rate = 30
 
-# Colors
-# GREEN = (0, 175, 0)
-# WHITE = (255, 255, 255)
-# BLUE = (75, 200, 255)
-# YELLOW = (255, 255, 175)
+
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
@@ -67,6 +64,35 @@ def draw_cloud(loc,cloud_color):
 def draw_rain():
     for r in rain_drops:
         pygame.draw.ellipse(screen, BLUE,r)
+
+def update_clounds():
+    for c in clouds:
+        c[0]+= 1
+
+        if c[0] > x + 100:
+            c[0] = random.randrange(-x,-100)
+            c[1] = random.randrange(0,math.ceil(y/3))
+def update_rain():
+    for r in rain_drops:
+        r[1]+= 2
+
+        if r[1] > y:
+            r[0] = random.randrange(0,x)
+            r[1] = random.randrange(-y,0)
+     
+def drawing_clounds():
+    for c in clouds:
+        draw_cloud(c , WHITE)
+
+def draw_sun():
+    pygame.draw.ellipse(screen, YELLOW, [575, 75, 100, 100])
+
+def draw_grass():
+    pygame.draw.rect(screen, GREEN, [0, 400, 800, 200])
+def draw_black():
+    pygame.draw.rect(screen, BLACK,[0, 600, 800, -600 ])
+
+
 # Game loop
 done = False
 
@@ -74,53 +100,43 @@ while not done:
     # Event processing
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True     
+            done = True 
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_n:
+                night = not night 
 
-    # Game logic
-    '''Clouds'''
-    for c in clouds:
-        c[0]+= 1
+    if not night:
+        '''Clouds'''
+        update_clounds()
 
-        if c[0] > x + 100:
-            c[0] = random.randrange(-x,-100)
-            c[1] = random.randrange(0,math.ceil(y/3))
+        '''rain'''
+        update_rain()
+        # Game logic
 
-    '''rain'''
-    for r in rain_drops:
-        r[1]+= 2
-
-        if r[1] > y:
-            r[0] = random.randrange(0,x)
-            r[1] = random.randrange(-y,0)
-             
-    # Drawing code
-    ''' sky '''
-    screen.fill(SKY_BLUE)
+        # Drawing code
+        ''' sky '''
+        screen.fill(SKY_BLUE)
 
 
-    '''clouds'''
-    for c in clouds:
-        draw_cloud(c , WHITE)
+        '''clouds'''
+        drawing_clounds()
 
-    
-    ''' sun '''
-    pygame.draw.ellipse(screen, YELLOW, [575, 75, 100, 100])
+        
+        ''' sun '''
+        draw_sun()
 
-    # ''' clouds '''
-    # draw_cloud(50, 150)
-    # draw_cloud(250, 75)
-    # draw_cloud(350, 125)
-    # draw_cloud(450, 175)
-    # draw_cloud(650, 100)
 
-    ''' grass '''
-    pygame.draw.rect(screen, GREEN, [0, 400, 800, 200])
-    
-    draw_rain()
+        ''' grass '''
+        draw_grass()
+        
 
+        draw_rain()
+
+        
+    elif  night:
+        draw_black()
     # Update screen
     pygame.display.flip()
     clock.tick(refresh_rate)
-
 # Close window on quit
 pygame.quit()
