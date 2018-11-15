@@ -3,6 +3,9 @@
 
 What is the sum of the digits of the number 2^1000?
 '''
+import time 
+start = time.time()
+
 num = 2**1000
 num = str(num)
 total = 0
@@ -14,3 +17,7 @@ for loc in range(0,len(num)):
     print(loc)
 total = str(total)
 print(len(num),total)
+
+
+elapsed = time.time() - start
+print(elapsed)
