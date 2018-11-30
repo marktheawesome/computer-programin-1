@@ -4,12 +4,16 @@ import math
 import time
 import random
 
+p = 0 
 x = 1210
 y = 720
 r = 1 
+j = 0 
 num = 0 
-
+night = False
 growning = True
+sonwing = True
+
 
 
 # Initialize game engine
@@ -91,6 +95,115 @@ def person(num,person_color):
 
 def snow():
     rect(screen, WHITE, 0, y, x, -40)
+def draw_screen(x,y,c):
+    pygame.draw.rect(screen, c,[0, y, x, -y ])
+
+def animation(done,p,x,y,r,j,num,night,growning,sonwing):
+
+    # Colors
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    ORANGE = (255, 125 , 0)
+    SKY_BLUE = (135, 206, 235)    
+    BROWN = (139,69,19)
+    YELLOW =(255,255,0)
+    GRAY = (211,211,211)
+    BLACK = (0,0,0)
+
+    colors = [RED,GREEN,BLUE,WHITE,BLACK,ORANGE,SKY_BLUE,BROWN,YELLOW,GRAY,BLACK]
+
+    colour1 = RED
+
+    while not done:
+        # Event processing (React to key presses, mouse clicks, etc.)
+        ''' for now, we'll just check to see if the X is clicked '''
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_g:
+                    growning = not growning
+                if event.key == pygame.K_n:
+                    night = not night  
+                if event.key == pygame.K_k:
+                    pygame.quit()
+                if event.key == pygame.K_s:
+                    sonwing = not sonwing   
+
+
+        # Game logic (Check for collisions, update points, etc.)
+        for c in clouds:
+            c[0]+= 1
+
+            if c[0] > x + 100:
+                c[0] = random.randrange(-x,-100)
+                c[1] = random.randrange(0,math.ceil(y/3))
+
+        for s in snow_drops:
+            s[1]+= 1
+
+            if s[1] > y:
+                s[0] = random.randrange(0,x)
+                s[1] = random.randrange(-y,0)
+    
+        # Drawing code (Describe the picture. It isn't actually drawn yet.)
+        
+        if not night:
+            if p ==1:
+                num = 0 
+                p = 0 
+            screen.fill(BLUE)
+
+            draw_fence(1210,720)
+            draw_grass()
+            draw_house()
+            person(num,GRAY)
+
+            for c in clouds:
+                draw_cloud(c , BLACK)
+            if sonwing:  
+                draw_snow()
+            draw_black_hole(r,colour1)
+
+            if growning:
+                r +=1
+                if r >=500:
+                    growning = False
+
+            elif not growning:
+                
+                r -= 1 
+
+                if r == 2:
+                    r +=1
+                    growning = True
+                    colour1 = random.choice(colors)
+                    
+            snow()
+                    
+
+            num += 1
+        
+        elif night:
+            draw_screen(x,y,colour1)
+            p = 1
+            j += 1
+            if j == 600:
+                pygame.quit()
+                
+            
+
+        # Update screen (Actually draw the picture in the window.)
+        pygame.display.flip()
+
+
+
+        # Limit refresh rate of game loop 
+        clock.tick(refresh_rate)
+
 # Window
 
 SIZE = (x, y)
@@ -120,78 +233,16 @@ BLACK = (0,0,0)
 colors = [RED,GREEN,BLUE,WHITE,BLACK,ORANGE,SKY_BLUE,BROWN,YELLOW,GRAY,BLACK]
 
 colour1 = RED
-# Game loop
+
+
 done = False
 
-while not done:
-    # Event processing (React to key presses, mouse clicks, etc.)
-    ''' for now, we'll just check to see if the X is clicked '''
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
 
 
-    # Game logic (Check for collisions, update points, etc.)
-    ''' leave this section alone for now ''' 
-    for c in clouds:
-        c[0]+= 1
-
-        if c[0] > x + 100:
-            c[0] = random.randrange(-x,-100)
-            c[1] = random.randrange(0,math.ceil(y/3))
-
-    for s in snow_drops:
-        s[1]+= 1
-
-        if s[1] > y:
-            s[0] = random.randrange(0,x)
-            s[1] = random.randrange(-y,0)
-  
-    # Drawing code (Describe the picture. It isn't actually drawn yet.)
-    
-    
-    screen.fill(BLUE)
-
-    draw_fence(1210,720)
-    draw_grass()
-    draw_house()
-    person(num,GRAY)
-
-    for c in clouds:
-        draw_cloud(c , BLACK)
-            
-    draw_snow()
-    draw_black_hole(r,colour1)
-
-    if growning:
-        r +=1
-        if r >=500:
-            growning = False
-
-    elif not growning:
-        
-        r -= 1 
-
-        if r == 2:
-            r +=1
-            growning = True
-            colour1 = random.choice(colors)
-            
-    snow()
-            
-
-    num+=1
-    
-    # Update screen (Actually draw the picture in the window.)
-    pygame.display.flip()
-
-
-
-    # Limit refresh rate of game loop 
-    clock.tick(refresh_rate)
-
-
+# Game loop
+animation(done,p,x,y,r,j,num,night,growning,sonwing)
 
 # Close window and quit
 pygame.quit()
+
 
