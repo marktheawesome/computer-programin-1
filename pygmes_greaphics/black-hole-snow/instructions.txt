@@ -1,1 +1,4 @@
-r
+S can start or stop the snow
+K will kill the program 
+G will chnge weather the "sun" is growing or shrinking
+N will explode the sun 

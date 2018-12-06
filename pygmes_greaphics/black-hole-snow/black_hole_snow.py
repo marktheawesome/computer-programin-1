@@ -98,6 +98,21 @@ def snow():
 def draw_screen(x,y,c):
     pygame.draw.rect(screen, c,[0, y, x, -y ])
 
+def game_logic(clouds,snow_drops):
+    for c in clouds:
+        c[0]+= 1
+
+        if c[0] > x + 100:
+            c[0] = random.randrange(-x,-100)
+            c[1] = random.randrange(0,math.ceil(y/3))
+
+    for s in snow_drops:
+        s[1]+= 1
+
+        if s[1] > y:
+            s[0] = random.randrange(0,x)
+            s[1] = random.randrange(-y,0)
+        
 def animation(done,p,x,y,r,j,num,night,growning,sonwing):
 
     # Colors
@@ -117,6 +132,7 @@ def animation(done,p,x,y,r,j,num,night,growning,sonwing):
 
     colour1 = RED
 
+
     while not done:
         # Event processing (React to key presses, mouse clicks, etc.)
         ''' for now, we'll just check to see if the X is clicked '''
@@ -135,19 +151,20 @@ def animation(done,p,x,y,r,j,num,night,growning,sonwing):
 
 
         # Game logic (Check for collisions, update points, etc.)
-        for c in clouds:
-            c[0]+= 1
+        # for c in clouds:
+        #     c[0]+= 1
 
-            if c[0] > x + 100:
-                c[0] = random.randrange(-x,-100)
-                c[1] = random.randrange(0,math.ceil(y/3))
+        #     if c[0] > x + 100:
+        #         c[0] = random.randrange(-x,-100)
+        #         c[1] = random.randrange(0,math.ceil(y/3))
 
-        for s in snow_drops:
-            s[1]+= 1
+        # for s in snow_drops:
+        #     s[1]+= 1
 
-            if s[1] > y:
-                s[0] = random.randrange(0,x)
-                s[1] = random.randrange(-y,0)
+        #     if s[1] > y:
+        #         s[0] = random.randrange(0,x)
+        #         s[1] = random.randrange(-y,0)
+        game_logic(clouds,snow_drops)
     
         # Drawing code (Describe the picture. It isn't actually drawn yet.)
         
@@ -244,5 +261,3 @@ animation(done,p,x,y,r,j,num,night,growning,sonwing)
 
 # Close window and quit
 pygame.quit()
-
-
