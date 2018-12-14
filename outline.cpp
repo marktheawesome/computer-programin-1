@@ -1,5 +1,4 @@
 #include <iostream>
-#include <ctime>
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
@@ -17,5 +16,4 @@ int main()
     cout << duration;
     cout << " microseconds";
     cout << "\n";
-
 }

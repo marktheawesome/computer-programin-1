@@ -29,8 +29,8 @@ BLACK = (0, 0, 0)
 # Make a block
 block =  [375, 275, 50, 50]
 
-block_vx = 0
-block_vy = 0
+block_v_x = 5
+block_v_y = 5
 
 block_speed = 5
 
@@ -40,7 +40,7 @@ block_speed = 5
 1 = stop on edge
 2 = wrap around
 '''
-case = 1
+case = 3
 
 
 # Game loop
@@ -63,19 +63,21 @@ while not done:
     # Game logic (Check for collisions, update points, etc.)
 
     ''' move the block '''
-    if up:
-        block_v_y = -block_speed
-    elif down:
-        block_v_y = block_speed
-    else:
-        block_v_y = 0
-        
-    if left:
-        block_v_x = -block_speed
-    elif right:
-        block_v_x = block_speed
-    else:
-        block_v_x = 0
+    if not case == 3:
+        if up:
+            block_v_y = -block_speed
+        elif down:
+            block_v_y = block_speed
+        else:
+            block_v_y = 0   
+                    
+
+        if left:
+            block_v_x = -block_speed
+        elif right:
+            block_v_x = block_speed
+        else:
+            block_v_x = 0
 
     block[0] += block_v_x
     block[1] += block_v_y
@@ -92,14 +94,18 @@ while not done:
     if case == 1:
         ''' if the block is moved out of the window, nudge it back on. '''
         if top < 0:
-            block[1] = 0 
+            block[1] = 0
+            block_v_y = block_v_y *-1 
         elif bottom > HEIGHT:
             block[1] = HEIGHT -block[3]
+            block_v_y = block_v_y *-1
 
         if left < 0:
-            block[0] = 0 
+            block[0] = 0
+            block_v_x = block_v_x *-1 
         elif right > WIDTH:
             block[0] = WIDTH -block[2]
+            block_v_x = block_v_x *-1
                 
 
     elif case == 2:
@@ -113,6 +119,24 @@ while not done:
             block[0] = WIDTH        
         elif left > WIDTH:
             block[0] = 0 
+
+    elif case == 3:
+        ''' if the block is moved out of the window, nudge it back on. ''' 
+        if top < 0:
+            block[1] = 0
+            block_v_y = block_v_y *-1 
+        elif bottom > HEIGHT:
+            block[1] = HEIGHT -block[3]
+            block_v_y = block_v_y *-1
+
+        if left < 0:
+            block[0] = 0
+            block_v_x = block_v_x *-1 
+        elif right > WIDTH:
+            block[0] = WIDTH -block[2]
+            block_v_x = block_v_x *-1
+
+
     
     
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
