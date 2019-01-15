@@ -50,7 +50,6 @@ def circle_circle(circle1, circle2):
 
 
 def rect_rect(rect1, rect2):
-    
     left1 = rect1[0]
     right1 = rect1[0] + rect1[2] - 1 
     top1 = rect1 [1]
@@ -66,5 +65,19 @@ def rect_rect(rect1, rect2):
                bottom1 < top2 or 
                top1 > bottom2)
 
-def rect_circle(rect, circle):
+def circle_rect(rect1, rect2):
     pass
+    left1 = rect1[0]
+    right1 = rect1[0] + rect1[2] - 1 
+    top1 = rect1 [1]
+    bottom1 = rect1[1] + rect1[3] - 1 
+
+    left2 = rect2[0]
+    right2 = rect2[0] + rect2[2] - 1 
+    top2 = rect2[1]
+    bottom2 = rect2[1] + rect2[3] - 1 
+
+    return not (right1 < left2-24  or 
+               left1 > right2 - 24 or  
+               bottom1 < top2 -24 or 
+               top1 > bottom2 - 24)

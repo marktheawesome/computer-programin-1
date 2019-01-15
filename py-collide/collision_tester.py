@@ -37,8 +37,9 @@ rectangle = [350, 275, 100, 50]
 2 = point-rectangle
 3 = circle-circle
 4 = rectangle-rectangle
+5 = rectangle- circle
 '''
-case = 4
+case = 5
 
 # Game loop
 done = False
@@ -74,6 +75,11 @@ while not done:
             color = RED
         else:
             color = WHITE
+    elif case == 5:
+        if intersects.rect_circle(rectangle, circle):
+            color = RED
+        else:
+            color = WHITE
 
     # Drawing code
     screen.fill(BLACK)
@@ -88,7 +94,10 @@ while not done:
     elif case == 4:
         pygame.draw.rect(screen, color, [rectangle[0], rectangle[1], rectangle[2], rectangle[3]])
         pygame.draw.rect(screen, color, [rectangle2[0], rectangle2[1], rectangle2[2], rectangle2[3]])
-
+    elif case == 5:
+        pygame.draw.circle(screen, color, [circle[0], circle[1]], circle[2])
+        pygame.draw.rect(screen, color, [rectangle2[0], rectangle2[1], rectangle2[2], rectangle2[3]])
+        
     # Update screen
     pygame.display.flip()
     clock.tick(refresh_rate)

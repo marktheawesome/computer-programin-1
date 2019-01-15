@@ -96,10 +96,11 @@ while not done:
         elif bottom > HEIGHT:
             block[1] = HEIGHT -block[3]
 
-        if left < 0:
-            block[0] = 0 
-        elif right > WIDTH:
-            block[0] = WIDTH -block[2]
+        if block[0] > WIDTH - block[2]: block[0] = WIDTH - block[2]
+        elif block[0] < 0: block[0] = 0
+            #     block[0] = 0 
+        #elif right > WIDTH:
+         #   block[0] = WIDTH -block[2]
                 
 
     elif case == 2:

@@ -1,3 +1,7 @@
+import math
+
+if math.sqrt(20) == 20**0.5:
+    print("True")
 '''
 Guess a number Ai
 Mark,G
