@@ -18,6 +18,8 @@ where (x, y) represents the coordinates of the upper left corner of
 the rectangle.
 """
 
+import math
+
 
 def point_circle(point, circle):
 
@@ -65,19 +67,40 @@ def rect_rect(rect1, rect2):
                bottom1 < top2 or 
                top1 > bottom2)
 
-def circle_rect(rect1, rect2):
-    pass
-    left1 = rect1[0]
-    right1 = rect1[0] + rect1[2] - 1 
-    top1 = rect1 [1]
-    bottom1 = rect1[1] + rect1[3] - 1 
+def rect_circle(rect,   # rectangle definition
+              circle):  # circle definition
+    """ Detect collision between a rectangle and circle. """
+ 
+    rleft = rect[0] 
+    rtop = rect[1]
+    width = rect[2]
+    height = rect[3]
 
-    left2 = rect2[0]
-    right2 = rect2[0] + rect2[2] - 1 
-    top2 = rect2[1]
-    bottom2 = rect2[1] + rect2[3] - 1 
+    center_x = circle[0]
+    center_y = circle[1]
+    radius = circle[2]
 
-    return not (right1 < left2-24  or 
-               left1 > right2 - 24 or  
-               bottom1 < top2 -24 or 
-               top1 > bottom2 - 24)
+    # complete boundbox of the rectangle
+    rright, rbottom = rleft + width, rtop + height
+
+    # bounding box of the circle
+    cleft, ctop     = center_x-radius, center_y-radius
+    cright, cbottom = center_x+radius, center_y+radius
+
+    # trivial reject if bounding boxes do not intersect
+    if rright < cleft or rleft > cright or rbottom < ctop or rtop > cbottom:
+        return False  # no collision possible
+
+    # check whether any point of rectangle is inside circle's radius
+    for x in (rleft, rleft+width):
+        for y in (rtop, rtop+height):
+            # compare distance between circle's center point and each point of
+            # the rectangle with the circle's radius
+            if math.hypot(x-center_x, y-center_y) <= radius:
+                return True  # collision detected
+
+    # check if center of circle is inside rectangle
+    if rleft <= center_x <= rright and rtop <= center_y <= rbottom:
+        return True  # overlaid
+
+    return False  # no collision detected
