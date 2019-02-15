@@ -109,28 +109,29 @@ score = 0
 stage = START
 
 def show_start():
-    text1 = MY_FONT.render("Block", True, WHITE)
-    text2 = MY_FONT.render("(Press space to play.)", True, WHITE)
+    text1 = my_font.render("maze", True, WHITE)
+    text2 = my_font.render("(Press space to play.)", True, WHITE)
     w1 = text1.get_width()
     w2 = text2.get_width()
-    screen.blit(text1, [WIDTH/2 - w1/2, 150])
-    screen.blit(text2, [WIDTH/2 - w2/2, 200])
+    screen.blit(text1, [X/2 - w1/2, 150])
+    screen.blit(text2, [X/2 - w2/2, 200])
 
 def show_end():
-    text1 = MY_FONT.render("Game Over", True, WHITE)
-    text2 = MY_FONT.render("(Press space to restart.)", True, WHITE)
+    screen.fill(BLACK)
+    text1 = my_font.render("Good job!", True, WHITE)
+    text2 = my_font.render("(Press space to restart.)", True, WHITE)
     w1 = text1.get_width()
     w2 = text2.get_width()
-    screen.blit(text1, [WIDTH/2 - w1/2, 150])
-    screen.blit(text2, [WIDTH/2 - w2/2, 200])
+    screen.blit(text1, [X/2 - w1/2, 150])
+    screen.blit(text2, [X/2 - w2/2, 200])
 
 def show_pause():
-    text1 = MY_FONT.render("Paused", True, WHITE)
-    text2 = MY_FONT.render("(Press p to restart.)", True, WHITE)
+    text1 = my_font.render("Paused", True, WHITE)
+    text2 = my_font.render("(Press p to restart.)", True, WHITE)
     w1 = text1.get_width()
     w2 = text2.get_width()
-    screen.blit(text1, [WIDTH/2 - w1/2, 150])
-    screen.blit(text2, [WIDTH/2 - w2/2, 200])
+    screen.blit(text1, [X/2 - w1/2, 150])
+    screen.blit(text2, [X/2 - w2/2, 200])
 
 #Grid
 def draw_grid(width, height, scale):
@@ -226,17 +227,6 @@ while not done:
             block_vx = block_speed
         else:
             block_vx = 0
-
-
-    elif stage == END:
-        if event.key == pygame.K_SPACE:
-            setup()               
-
-    elif stage == PAUSED:
-        show_pause()
-        if event.key == pygame.K_p:
-            stage = PLAYING
-
             
     # Game logic (Check for collisions, update points, etc.)
         
@@ -278,11 +268,16 @@ while not done:
         stage = END
 
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
-    screen.fill(WHITE)
-    draw_coins()      
-    draw_walls(BLACK) 
-    draw_player(player) 
-    draw_score(score)
+    if stage == START:
+        show_start()
+    elif stage == PLAYING:
+        screen.fill(WHITE)
+        draw_coins()      
+        draw_walls(BLACK) 
+        draw_player(player) 
+        draw_score(score)
+    elif stage == END:
+        show_end()
 
     # Update screen (Actually draw the picture in the window.)
     pygame.display.flip()
