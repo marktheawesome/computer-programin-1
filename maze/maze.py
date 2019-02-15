@@ -52,21 +52,7 @@ def setup():
         local_x = random.randint(0,X)
         local_y = random.randint(0,Y)
         coin_temp = [local_x,local_y,local_s,local_s]
-        # for wall in walls:
-            # if intersects.rect_circle(wall,coin_temp):
-        ''' need to fix ''' 
-        #     if not intersects.rect_rect(wall,coin_temp):
-        #         check +=1
-        #     else:
-        #         pass
-        
-        # if check == len(walls):
-        #     coins.append(coin_temp)
-        # else:
-        #     pass
         coins.append(coin_temp)        
-
-
 
 # winning pic
 win = pygame.image.load('pic/youwin.jpg')
@@ -204,6 +190,10 @@ while not done:
             if stage == START:
                 if event.key == pygame.K_SPACE:
                     stage = PLAYING
+
+            if stage == END:
+                if event.key == pygame.K_SPACE:
+                    stage = START
             
     if stage == PLAYING:                
         ''' poll key states '''
