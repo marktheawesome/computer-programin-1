@@ -1,0 +1,47 @@
+    # for event in pygame.event.get():
+    #     if event.type == pygame.QUIT:
+    #         done = True
+
+    #     elif event.type == pygame.KEYDOWN:
+    #         if stage == START:
+    #             if event.key == pygame.K_SPACE:
+    #                 stage = PLAYING
+
+                
+    #     elif stage == PLAYING:                
+    #         ''' poll key states '''
+    #         state = pygame.key.get_pressed()
+
+    #         up = state[pygame.K_UP]
+    #         down = state[pygame.K_DOWN]
+    #         left = state[pygame.K_LEFT]
+    #         right = state[pygame.K_RIGHT]
+
+    #         if up:
+    #             block_vy = -block_speed
+    #         elif down:
+    #             block_vy = block_speed
+    #         else:
+    #             block_vy = 0
+                
+    #         if left:
+    #             block_vx = -block_speed
+    #         elif right:
+    #             block_vx = block_speed
+    #         else:
+    #             block_vx = 0
+    #     elif stage == END:
+    #         if event.key == pygame.K_SPACE:
+    #             setup()
+
+    #Grid
+def draw_grid(width, height, scale):
+    '''
+    Draws a grid that can overlay your picture.
+    This should make it easier to figure out coordinates
+    when drawing pictures.
+    '''
+    for x in range(0, width, scale):
+        pygame.draw.line(screen, BLACK, [x, 0], [x, height], 1)
+    for y in range(0, height, scale):
+        pygame.draw.line(screen, BLACK, [0, y], [width, y])
