@@ -137,19 +137,38 @@ class Bomb():
 
 class Fleet():
     def __init__(self,mobs):
-        pass
+        self.mobs = mobs
+        self.speed = 5 
+        self.moving_right = True
+
     
     def move(self):
-        pass
+        hits_edge = False
+
+        for m in mobs:
+            if self.moving_right:
+                m.rect.x += self.speed
+                if m.rect.right >= WIDTH:
+                    hits_edge = True
+                
+            else:
+                m.rect.x -= self.speed
+                if m.rect.left <= 0:
+                    hits_edge = True    
+
+        if hits_edge:
+            self.reverse()
+            self.move_down()        
     
     def reverse(self):
-        pass
+        self.moving_right = not self.moving_right
 
-    def move_down(self):
-        pass
+    def move_down(self,):
+       for m in mobs:
+           m.rect.y += m.image.get_height()
 
     def update(self):
-        pass
+        self.move()
 
 
 # Game helper functions
@@ -162,7 +181,7 @@ def show_stats(player):
 
 def setup():
     global stage, done
-    global player, ship, lasers, mobs
+    global player, ship, lasers, mobs, fleet
     
     ''' Make game objects '''
     ship = Ship(384,536,ship_img)
@@ -180,6 +199,10 @@ def setup():
 
     mobs = pygame.sprite.Group()
     mobs.add(mob1,mob2,mob3)
+
+
+
+    fleet = Fleet(mobs)
 
     ''' set stage '''
     stage = START
@@ -221,19 +244,21 @@ while not done:
             ship.shoot()
 
     # Game logic (Check for collisions, update points, etc.)
-
-    player.update()
-    lasers.update()
-    mobs.update()
+    if stage == PLAYING:
+        player.update()
+        lasers.update()
+        fleet.update()
+        mobs.update()
 
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
+    if stage == START:
+        show_title_screen()
+
     screen.fill(BLACK)
     lasers.draw(screen)
     player.draw(screen)
     mobs.draw(screen)
 
-    if stage == START:
-        show_title_screen()
 
         
     # Update screen (Actually draw the picture in the window.)
