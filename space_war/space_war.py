@@ -1,6 +1,8 @@
 # Imports
 import pygame
 
+
+# show_up = pygame.sprite.
 # Initialize game engine
 pygame.init()
 
@@ -35,11 +37,14 @@ FONT_XL = pygame.font.Font("assets/fonts/spacerangerboldital.ttf", 96)
 
 
 # Images
-ship_img = pygame.image.load('assets/images/player.png').convert()
+ship_img = pygame.image.load('assets/images/player.png').convert_alpha()
+laser_img = pygame.image.load('assets/images/laserRed.png').convert_alpha()
+enemy_img = pygame.image.load('assets/images/enemyShip.png').convert_alpha()
 
 
 # Sounds
 EXPLOSION = pygame.mixer.Sound('assets/sounds/explosion.ogg')
+SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
 
 
 # Stages
@@ -58,23 +63,93 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y 
 
+        self.speed = 3
+
     def move_left(self):
-        self.rect.x -=5
+        self.rect.x -= self.speed
     
     def move_right(self):
-        self.rect.x +=5
+        self.rect.x +=self.speed
 
     def shoot(self):
         print('SHOOT!')
 
+        laser = Laser(laser_img)
+        laser.rect.centerx = self.rect.centerx
+        laser.rect.centery = self.rect.top
+        lasers.add(laser)
+
+        SHOOT_SOUND.play()
+
     def update(self):
-        if self.rect.x < 0:
-            self.rect.x = 0
-        elif self.rect.x + int(self.rect[2]) > WIDTH:
-            self.rect.x = WIDTH - int(self.rect[2])
+        # if self.rect.x < 0:
+        #     self.rect.x = 0
+        
+        # elif self.rect.x + int(self.rect[2]) > WIDTH:
+        #     self.rect.x = WIDTH - int(self.rect[2])
+
+        if self.rect.left < 0:
+            self.rect.left = 0 
+
+        elif self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+
+class Laser(pygame.sprite.Sprite):
+    def __init__(self, image):
+        super().__init__()
+
+        self.image = image
+        self.rect = self.image.get_rect()
+
+        self.speed = 5
 
 
+    def shoot(self):
+        print('SHOOT!')
+        SHOOT_SOUND.play()
 
+    def update(self):
+        self.rect.y -= self.speed
+        if self.rect.bottom < 0:
+            # lasers.append(self)
+            self.kill()
+            print("Deleted")
+        
+class Mob(pygame.sprite.Sprite):
+    def __init__(self, x, y, image):
+        super().__init__()
+
+        self.image = image
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        
+
+    def update(self):
+        hit_list = pygame.sprite.spritecollide(self,lasers,True,pygame.sprite.collide_mask)
+        print(len(hit_list))
+        if len(hit_list) > 0:
+            self.kill()
+
+class Bomb():
+    pass
+
+class Fleet():
+    def __init__(self,mobs):
+        pass
+    
+    def move(self):
+        pass
+    
+    def reverse(self):
+        pass
+
+    def move_down(self):
+        pass
+
+    def update(self):
+        pass
 
 
 # Game helper functions
@@ -86,14 +161,25 @@ def show_stats(player):
     pass
 
 def setup():
-    global stage, done, player, ship
+    global stage, done
+    global player, ship, lasers, mobs
     
     ''' Make game objects '''
     ship = Ship(384,536,ship_img)
+    # laser = Laser()
 
     ''' Make sprite groups '''
     player = pygame.sprite.GroupSingle()
     player.add(ship)
+
+    lasers = pygame.sprite.Group()
+
+    mob1 = Mob(100,100,enemy_img)
+    mob2 = Mob(300,100,enemy_img)
+    mob3 = Mob(500,100,enemy_img)
+
+    mobs = pygame.sprite.Group()
+    mobs.add(mob1,mob2,mob3)
 
     ''' set stage '''
     stage = START
@@ -112,31 +198,40 @@ while not done:
             if stage == START:
                 if event.key == pygame.K_SPACE:
                     stage = PLAYING
+        
             elif stage == PLAYING:
                 if event.key == pygame.K_w:
                     ship.shoot()
                     
     ''' poll key states '''
     state = pygame.key.get_pressed()
-    s = state[pygame.K_s]
     a = state[pygame.K_a]
+    s = state[pygame.K_s]
+    d = state[pygame.K_d]
     
-    # Game logic (Check for collisions, update points, etc.)
     if stage == PLAYING:
-        ''' set velocity for player 1 '''
         if a:
             ship.move_left()
         elif d:
             ship.move_right()
         else:
             block1_vx = 0
+    
+        if s:
+            ship.shoot()
 
-    ship.update()
+    # Game logic (Check for collisions, update points, etc.)
+
+    player.update()
+    lasers.update()
+    mobs.update()
+
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
     screen.fill(BLACK)
+    lasers.draw(screen)
     player.draw(screen)
+    mobs.draw(screen)
 
-    
     if stage == START:
         show_title_screen()
 
