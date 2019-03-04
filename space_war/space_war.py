@@ -31,6 +31,9 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 GREEN = (100, 255, 100)
 
+# Global Varibles
+STAGE = 0
+DONE = False
 
 # Fonts
 FONT_SM = pygame.font.Font(None, 24)
@@ -40,9 +43,9 @@ FONT_XL = pygame.font.Font("assets/fonts/spacerangerboldital.ttf", 96)
 
 
 # Images
-SHIP_IMG = pygame.image.load('assets/images/player.png').convert_alpha()
+ship_IMG = pygame.image.load('assets/images/player.png').convert_alpha()
 LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
-ENEMY_IMG = pygame.image.load('assets/images/enemyShip.png').convert_alpha()
+ENEMY_IMG = pygame.image.load('assets/images/enemyship.png').convert_alpha()
 
 
 # Sounds
@@ -57,7 +60,7 @@ END = 2
 
 
 # Game classes
-class Ship(pygame.sprite.Sprite):
+class ship(pygame.sprite.Sprite):
     '''
     This is the class of the ship. It will
     handle movement, decteding weather it was shhot. and updating.
@@ -119,20 +122,14 @@ class Laser(pygame.sprite.Sprite):
 
         self.speed = 5
 
-
-    # def shoot(self):
-    #     print('SHOOT!')
-    #     SHOOT_SOUND.play()
-
     def update(self):
         '''
         Move the lasers up the screen and will delete them when appoiot
         '''
         self.rect.y -= self.speed
         if self.rect.bottom < 0:
-            # lasers.append(self)
             self.kill()
-            # print("Deleted")
+
 
 class Mob(pygame.sprite.Sprite):
     '''
@@ -153,7 +150,6 @@ class Mob(pygame.sprite.Sprite):
         This will check to see if the mobs have been hit.
         '''
         hit_list = pygame.sprite.spritecollide(self, lasers, True, pygame.sprite.collide_mask)
-        print(len(hit_list))
         if len(hit_list) > 0:
             self.kill()
 
@@ -164,8 +160,8 @@ class Fleet(): # fleet of enemy ships
     '''
     This is a class of the mobs where it will process their movement.
     '''
-    def __init__(self, mobs):
-        self.mobs = mobs
+    def __init__(self, mobes):
+        self.mobs = mobes
         self.speed = 5
         self.moving_right = True
 
@@ -202,7 +198,7 @@ class Fleet(): # fleet of enemy ships
         This runs through all the mobs, then moves them down.
         '''
         for mob in self.mobs:
-            mob.rect.y += mob.image.get_height()
+            mob.rect.y += 5
 
     def update(self):
         '''
@@ -219,20 +215,21 @@ def show_title_screen():
     title_text = FONT_XL.render("Space War!", 1, WHITE)
     SCREEN.blit(title_text, [128, 204])
 
-def show_stats(player):
-    pass
+# def show_stats(player):
+#     pass
 
 def setup():
-    global stage, done
-    global player, ship, lasers, mobs, fleet
-
+    '''
+    this sets up the whole thing.
+    '''
+    global STAGE, DONE
+    global PLAYER, ship, lasers, mobs, fleet
     # ''' Make game objects '''
-    ship = Ship(384, 536, SHIP_IMG)
-    # laser = Laser()
+    ship = ship(384, 536, ship_IMG)
 
     # ''' Make sprite groups '''
-    player = pygame.sprite.GroupSingle()
-    player.add(ship)
+    PLAYER = pygame.sprite.GroupSingle()
+    PLAYER.add(ship)
 
     lasers = pygame.sprite.Group()
 
@@ -248,24 +245,25 @@ def setup():
     fleet = Fleet(mobs)
 
     # ''' set stage '''
-    stage = START
-    done = False
+    STAGE = START
+    DONE = False
+
 
 
 # Game loop
 setup()
 
-while not done:
+while not DONE:
     # Input handling (React to key presses, mouse clicks, etc.)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True
+            DONE = True
         elif event.type == pygame.KEYDOWN:
-            if stage == START:
+            if STAGE == START:
                 if event.key == pygame.K_SPACE:
-                    stage = PLAYING
+                    STAGE = PLAYING
 
-            elif stage == PLAYING:
+            elif STAGE == PLAYING:
                 if event.key == pygame.K_w:
                     ship.shoot()
 
@@ -275,7 +273,7 @@ while not done:
     S = STATE[pygame.K_s]
     D = STATE[pygame.K_d]
 
-    if stage == PLAYING:
+    if STAGE == PLAYING:
         if A:
             ship.move_left()
         elif D:
@@ -287,19 +285,19 @@ while not done:
             ship.shoot()
 
     # Game logic (Check for collisions, update points, etc.)
-    if stage == PLAYING:
-        player.update()
+    if STAGE == PLAYING:
+        PLAYER.update()
         lasers.update()
         fleet.update()
         mobs.update()
 
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
-    if stage == START:
+    if STAGE == START:
         show_title_screen()
-    elif stage == PLAYING:
+    elif STAGE == PLAYING:
         SCREEN.fill(BLACK)
         lasers.draw(SCREEN)
-        player.draw(SCREEN)
+        PLAYER.draw(SCREEN)
         mobs.draw(SCREEN)
     else:
         print("else")
