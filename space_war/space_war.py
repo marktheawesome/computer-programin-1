@@ -1,8 +1,11 @@
+'''
+Space Wars is a take on the old classic game space invaders.
+'''
+
 # Imports
 import pygame
 
 
-# show_up = pygame.sprite.
 # Initialize game engine
 pygame.init()
 
@@ -12,13 +15,13 @@ WIDTH = 800
 HEIGHT = 600
 SIZE = (WIDTH, HEIGHT)
 TITLE = "Space War"
-screen = pygame.display.set_mode(SIZE)
+SCREEN = pygame.display.set_mode(SIZE)
 pygame.display.set_caption(TITLE)
 
 
 # Timer
-clock = pygame.time.Clock()
-refresh_rate = 60
+CLOCK = pygame.time.Clock()
+REFRESH_RATE = 60
 
 
 # Colors
@@ -37,9 +40,9 @@ FONT_XL = pygame.font.Font("assets/fonts/spacerangerboldital.ttf", 96)
 
 
 # Images
-ship_img = pygame.image.load('assets/images/player.png').convert_alpha()
-laser_img = pygame.image.load('assets/images/laserRed.png').convert_alpha()
-enemy_img = pygame.image.load('assets/images/enemyShip.png').convert_alpha()
+SHIP_IMG = pygame.image.load('assets/images/player.png').convert_alpha()
+LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
+ENEMY_IMG = pygame.image.load('assets/images/enemyShip.png').convert_alpha()
 
 
 # Sounds
@@ -55,46 +58,59 @@ END = 2
 
 # Game classes
 class Ship(pygame.sprite.Sprite):
-    def __init__(self, x, y, image):
+    '''
+    This is the class of the ship. It will
+    handle movement, decteding weather it was shhot. and updating.
+    '''
+    def __init__(self, ship_x, ship_y, image):
         super().__init__()
 
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y 
+        self.rect.x = ship_x
+        self.rect.y = ship_y
 
         self.speed = 3
 
     def move_left(self):
+        '''
+        moves space ship left
+        '''
         self.rect.x -= self.speed
-    
+
     def move_right(self):
-        self.rect.x +=self.speed
+        '''
+        moves space ship right
+        '''
+        self.rect.x += self.speed
 
     def shoot(self):
-        print('SHOOT!')
+        '''
+        this will start the process of a laser being shot from the ship.
+        '''
 
-        laser = Laser(laser_img)
+        laser = Laser(LASER_IMG)
         laser.rect.centerx = self.rect.centerx
         laser.rect.centery = self.rect.top
         lasers.add(laser)
-
         SHOOT_SOUND.play()
 
     def update(self):
-        # if self.rect.x < 0:
-        #     self.rect.x = 0
-        
-        # elif self.rect.x + int(self.rect[2]) > WIDTH:
-        #     self.rect.x = WIDTH - int(self.rect[2])
+        '''
+        this will up date the ship.
+            See if it has hit walls
+        '''
 
         if self.rect.left < 0:
-            self.rect.left = 0 
+            self.rect.left = 0
 
         elif self.rect.right > WIDTH:
             self.rect.right = WIDTH
 
 class Laser(pygame.sprite.Sprite):
+    '''
+    This class will hold all the lasers shot. And will move and kill them.
+    '''
     def __init__(self, image):
         super().__init__()
 
@@ -104,30 +120,39 @@ class Laser(pygame.sprite.Sprite):
         self.speed = 5
 
 
-    def shoot(self):
-        print('SHOOT!')
-        SHOOT_SOUND.play()
+    # def shoot(self):
+    #     print('SHOOT!')
+    #     SHOOT_SOUND.play()
 
     def update(self):
+        '''
+        Move the lasers up the screen and will delete them when appoiot
+        '''
         self.rect.y -= self.speed
         if self.rect.bottom < 0:
             # lasers.append(self)
             self.kill()
-            print("Deleted")
-        
+            # print("Deleted")
+
 class Mob(pygame.sprite.Sprite):
-    def __init__(self, x, y, image):
+    '''
+    This class will house all the enemies and update them.
+    '''
+    def __init__(self, mob_x, mob_y, image):
         super().__init__()
 
         self.image = image
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        
+        self.rect.x = mob_x
+        self.rect.y = mob_y
+
 
     def update(self):
-        hit_list = pygame.sprite.spritecollide(self,lasers,True,pygame.sprite.collide_mask)
+        '''
+        This will check to see if the mobs have been hit.
+        '''
+        hit_list = pygame.sprite.spritecollide(self, lasers, True, pygame.sprite.collide_mask)
         print(len(hit_list))
         if len(hit_list) > 0:
             self.kill()
@@ -135,46 +160,64 @@ class Mob(pygame.sprite.Sprite):
 class Bomb():
     pass
 
-class Fleet():
-    def __init__(self,mobs):
+class Fleet(): # fleet of enemy ships
+    '''
+    This is a class of the mobs where it will process their movement.
+    '''
+    def __init__(self, mobs):
         self.mobs = mobs
-        self.speed = 5 
+        self.speed = 5
         self.moving_right = True
 
-    
+
     def move(self):
+        '''
+        This function will move the fleet.
+        '''
         hits_edge = False
 
-        for m in mobs:
+        for _m in mobs:
             if self.moving_right:
-                m.rect.x += self.speed
-                if m.rect.right >= WIDTH:
+                _m.rect.x += self.speed
+                if _m.rect.right >= WIDTH:
                     hits_edge = True
-                
+
             else:
-                m.rect.x -= self.speed
-                if m.rect.left <= 0:
-                    hits_edge = True    
+                _m.rect.x -= self.speed
+                if _m.rect.left <= 0:
+                    hits_edge = True
 
         if hits_edge:
             self.reverse()
-            self.move_down()        
-    
+            self.move_down()
+
     def reverse(self):
+        '''
+        IDK WHY THIS HAS TO BE A FUNCTION
+        '''
         self.moving_right = not self.moving_right
 
-    def move_down(self,):
-       for m in mobs:
-           m.rect.y += m.image.get_height()
+    def move_down(self):
+        '''
+        This runs through all the mobs, then moves them down.
+        '''
+        for mob in self.mobs:
+            mob.rect.y += mob.image.get_height()
 
     def update(self):
+        '''
+        updates the fleet
+        '''
         self.move()
 
 
 # Game helper functions
 def show_title_screen():
+    '''
+    This will show the start screen.
+    '''
     title_text = FONT_XL.render("Space War!", 1, WHITE)
-    screen.blit(title_text, [128, 204])
+    SCREEN.blit(title_text, [128, 204])
 
 def show_stats(player):
     pass
@@ -182,33 +225,33 @@ def show_stats(player):
 def setup():
     global stage, done
     global player, ship, lasers, mobs, fleet
-    
-    ''' Make game objects '''
-    ship = Ship(384,536,ship_img)
+
+    # ''' Make game objects '''
+    ship = Ship(384, 536, SHIP_IMG)
     # laser = Laser()
 
-    ''' Make sprite groups '''
+    # ''' Make sprite groups '''
     player = pygame.sprite.GroupSingle()
     player.add(ship)
 
     lasers = pygame.sprite.Group()
 
-    mob1 = Mob(100,100,enemy_img)
-    mob2 = Mob(300,100,enemy_img)
-    mob3 = Mob(500,100,enemy_img)
+    mob1 = Mob(100, 100, ENEMY_IMG)
+    mob2 = Mob(300, 100, ENEMY_IMG)
+    mob3 = Mob(500, 100, ENEMY_IMG)
 
     mobs = pygame.sprite.Group()
-    mobs.add(mob1,mob2,mob3)
+    mobs.add(mob1, mob2, mob3)
 
 
 
     fleet = Fleet(mobs)
 
-    ''' set stage '''
+    # ''' set stage '''
     stage = START
     done = False
 
-    
+
 # Game loop
 setup()
 
@@ -221,26 +264,26 @@ while not done:
             if stage == START:
                 if event.key == pygame.K_SPACE:
                     stage = PLAYING
-        
+
             elif stage == PLAYING:
                 if event.key == pygame.K_w:
                     ship.shoot()
-                    
-    ''' poll key states '''
-    state = pygame.key.get_pressed()
-    a = state[pygame.K_a]
-    s = state[pygame.K_s]
-    d = state[pygame.K_d]
-    
+
+    # ''' poll key states '''
+    STATE = pygame.key.get_pressed()
+    A = STATE[pygame.K_a]
+    S = STATE[pygame.K_s]
+    D = STATE[pygame.K_d]
+
     if stage == PLAYING:
-        if a:
+        if A:
             ship.move_left()
-        elif d:
+        elif D:
             ship.move_right()
         else:
             block1_vx = 0
-    
-        if s:
+
+        if S:
             ship.shoot()
 
     # Game logic (Check for collisions, update points, etc.)
@@ -253,20 +296,20 @@ while not done:
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
     if stage == START:
         show_title_screen()
+    elif stage == PLAYING:
+        SCREEN.fill(BLACK)
+        lasers.draw(SCREEN)
+        player.draw(SCREEN)
+        mobs.draw(SCREEN)
+    else:
+        print("else")
 
-    screen.fill(BLACK)
-    lasers.draw(screen)
-    player.draw(screen)
-    mobs.draw(screen)
-
-
-        
     # Update screen (Actually draw the picture in the window.)
     pygame.display.flip()
 
 
-    # Limit refresh rate of game loop 
-    clock.tick(refresh_rate)
+    # Limit refresh rate of game loop
+    CLOCK.tick(REFRESH_RATE)
 
 
 # Close window and quit
