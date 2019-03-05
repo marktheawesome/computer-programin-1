@@ -31,9 +31,6 @@ BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 GREEN = (100, 255, 100)
 
-# Global Varibles
-STAGE = 0
-DONE = False
 
 # Fonts
 FONT_SM = pygame.font.Font(None, 24)
@@ -43,7 +40,7 @@ FONT_XL = pygame.font.Font("assets/fonts/spacerangerboldital.ttf", 96)
 
 
 # Images
-ship_IMG =  pygame.image.load('assets/images/player.png').convert_alpha()
+SHIP_IMG = pygame.image.load('assets/images/player.png').convert_alpha()
 LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
 ENEMY_IMG = pygame.image.load('assets/images/enemyShip.png').convert_alpha()
 
@@ -60,7 +57,7 @@ END = 2
 
 
 # Game classes
-class ship(pygame.sprite.Sprite):
+class Ship(pygame.sprite.Sprite):
     '''
     This is the class of the ship. It will
     handle movement, decteding weather it was shhot. and updating.
@@ -95,7 +92,7 @@ class ship(pygame.sprite.Sprite):
         laser = Laser(LASER_IMG)
         laser.rect.centerx = self.rect.centerx
         laser.rect.centery = self.rect.top
-        lasers.add(laser)
+        LASERS.add(laser)
         SHOOT_SOUND.play()
 
     def update(self):
@@ -149,20 +146,20 @@ class Mob(pygame.sprite.Sprite):
         '''
         This will check to see if the mobs have been hit.
         '''
-        hit_list = pygame.sprite.spritecollide(self, lasers, True, pygame.sprite.collide_mask)
+        hit_list = pygame.sprite.spritecollide(self, LASERS, True, pygame.sprite.collide_mask)
         if len(hit_list) > 0:
             self.kill()
 
 class Bomb():
     pass
 
-class Fleet(): # fleet of enemy ships
+class Fleet():
     '''
     This is a class of the mobs where it will process their movement.
     '''
     def __init__(self, mobes):
         self.mobs = mobes
-        self.speed = 5
+        self.speed = 3
         self.moving_right = True
 
 
@@ -172,7 +169,7 @@ class Fleet(): # fleet of enemy ships
         '''
         hits_edge = False
 
-        for _m in mobs:
+        for _m in MOBS:
             if self.moving_right:
                 _m.rect.x += self.speed
                 if _m.rect.right >= WIDTH:
@@ -223,26 +220,26 @@ def setup():
     this sets up the whole thing.
     '''
     global STAGE, DONE
-    global PLAYER, ship, lasers, mobs, fleet
+    global PLAYER, SHIP, LASERS, MOBS, FLEET
     # ''' Make game objects '''
-    ship = ship(384, 536, ship_IMG)
+    SHIP = Ship(384, 536, SHIP_IMG)
 
     # ''' Make sprite groups '''
     PLAYER = pygame.sprite.GroupSingle()
-    PLAYER.add(ship)
+    PLAYER.add(SHIP)
 
-    lasers = pygame.sprite.Group()
+    LASERS = pygame.sprite.Group()
 
     mob1 = Mob(100, 100, ENEMY_IMG)
     mob2 = Mob(300, 100, ENEMY_IMG)
     mob3 = Mob(500, 100, ENEMY_IMG)
 
-    mobs = pygame.sprite.Group()
-    mobs.add(mob1, mob2, mob3)
+    MOBS = pygame.sprite.Group()
+    MOBS.add(mob1, mob2, mob3)
 
 
 
-    fleet = Fleet(mobs)
+    FLEET = Fleet(MOBS)
 
     # ''' set stage '''
     STAGE = START
@@ -265,7 +262,7 @@ while not DONE:
 
             elif STAGE == PLAYING:
                 if event.key == pygame.K_w:
-                    ship.shoot()
+                    SHIP.shoot()
 
     # ''' poll key states '''
     STATE = pygame.key.get_pressed()
@@ -275,30 +272,28 @@ while not DONE:
 
     if STAGE == PLAYING:
         if A:
-            ship.move_left()
+            SHIP.move_left()
         elif D:
-            ship.move_right()
-        else:
-            block1_vx = 0
+            SHIP.move_right()
 
         if S:
-            ship.shoot()
+            SHIP.shoot()
 
     # Game logic (Check for collisions, update points, etc.)
     if STAGE == PLAYING:
         PLAYER.update()
-        lasers.update()
-        fleet.update()
-        mobs.update()
+        LASERS.update()
+        FLEET.update()
+        MOBS.update()
 
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
     if STAGE == START:
         show_title_screen()
     elif STAGE == PLAYING:
         SCREEN.fill(BLACK)
-        lasers.draw(SCREEN)
+        LASERS.draw(SCREEN)
         PLAYER.draw(SCREEN)
-        mobs.draw(SCREEN)
+        MOBS.draw(SCREEN)
     else:
         print("else")
 
