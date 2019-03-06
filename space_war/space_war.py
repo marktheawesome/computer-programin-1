@@ -3,16 +3,17 @@ Space Wars is a take on the old classic game space invaders.
 '''
 
 # Imports
+import random
 import pygame
 
-
 # Initialize game engine
+pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 
 
 # Window
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1280
+HEIGHT = 720
 SIZE = (WIDTH, HEIGHT)
 TITLE = "Space War"
 SCREEN = pygame.display.set_mode(SIZE)
@@ -22,7 +23,6 @@ pygame.display.set_caption(TITLE)
 # Timer
 CLOCK = pygame.time.Clock()
 REFRESH_RATE = 60
-
 
 # Colors
 RED = (255, 0, 0)
@@ -40,15 +40,27 @@ FONT_XL = pygame.font.Font("assets/fonts/spacerangerboldital.ttf", 96)
 
 
 # Images
-SHIP_IMG = pygame.image.load('assets/images/player.png').convert_alpha()
+SHIP_IMG = pygame.image.load('assets/images/spitfire.png').convert_alpha()
 LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
-ENEMY_IMG = pygame.image.load('assets/images/enemyShip.png').convert_alpha()
+ENEMY_IMG = pygame.image.load('assets/images/messerschmitt-bf-109-a1.png').convert_alpha()
+BOMB_IMG = pygame.image.load('assets/images/laserGreen.png').convert_alpha()
+EXPLOSION = pygame.image.load('assets/images/explosion.png').convert()
+BACKGROUND_IMG = pygame.image.load('assets/images/Background/ocean.jpg')
+FIREBALL_IMG = pygame.image.load('assets/images/fireball-effect.png').convert_alpha()
 
 
 # Sounds
 EXPLOSION = pygame.mixer.Sound('assets/sounds/explosion.ogg')
 SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
+A_10_SOUND = pygame.mixer.Sound('assets/sounds/A-10 sound.ogg')
 
+# Gloabl Varables
+PLAYER = 0
+LASERS = 0
+MOBS = 0
+FLEET = 0
+BOMBS = 0
+SHIP = 0
 
 # Stages
 START = 0
@@ -93,7 +105,7 @@ class Ship(pygame.sprite.Sprite):
         laser.rect.centerx = self.rect.centerx
         laser.rect.centery = self.rect.top
         LASERS.add(laser)
-        SHOOT_SOUND.play()
+        # SHOOT_SOUND.play()
 
     def update(self):
         '''
@@ -142,16 +154,73 @@ class Mob(pygame.sprite.Sprite):
         self.rect.y = mob_y
 
 
+    def drop_bomb(self):
+        '''
+        This is acctually shoot the enemy lasers
+        '''
+        bomb = Bomb(BOMB_IMG)
+        bomb.rect.centerx = self.rect.centerx
+        bomb.rect.centery = self.rect.bottom
+        BOMBS.add(bomb)
+
+
+
+    def after_death(self):
+        fireball = FireBall(FIREBALL_IMG)
+        fireball.rect.centerx = self.rect.centerx
+        fireball.rect.centery = self.rect.bottom
+        FIREBALL.add(fireball)
+
     def update(self):
         '''
         This will check to see if the mobs have been hit.
         '''
         hit_list = pygame.sprite.spritecollide(self, LASERS, True, pygame.sprite.collide_mask)
-        if len(hit_list) > 0:
+        if hit_list:
+            self.after_death()
             self.kill()
 
-class Bomb():
-    pass
+
+
+class Bomb(pygame.sprite.Sprite):
+    '''
+    This class will hold all the bombs shot. And will move and kill them.
+    '''
+    def __init__(self, image):
+        super().__init__()
+
+        self.image = image
+        self.rect = self.image.get_rect()
+
+        self.speed = 3
+
+    def update(self):
+        '''
+        Move the lasers up the screen and will delete them when appoiot.
+        '''
+        self.rect.y += self.speed
+        if self.rect.top > HEIGHT:
+            self.kill()
+
+class FireBall(pygame.sprite.Sprite):
+    '''
+    This class will hold all the bombs shot. And will move and kill them.
+    '''
+    def __init__(self, image):
+        super().__init__()
+
+        self.image = image
+        self.rect = self.image.get_rect()
+
+        self.speed = 3
+
+    def update(self):
+        '''
+        Move the lasers up the screen and will delete them when appoiot.
+        '''
+        self.rect.y += self.speed
+        if self.rect.top > HEIGHT:
+            self.kill()
 
 class Fleet():
     '''
@@ -161,8 +230,8 @@ class Fleet():
         self.mobs = mobes
         self.speed = 3
         self.moving_right = True
-
-
+        self.drop_speed = 5
+        self.bomb_rate = 60
     def move(self):
         '''
         This function will move the fleet.
@@ -195,13 +264,26 @@ class Fleet():
         This runs through all the mobs, then moves them down.
         '''
         for mob in self.mobs:
-            mob.rect.y += 5
+            mob.rect.y += self.drop_speed
+
+    def choose_bomber(self):
+        '''
+        This will randoly choose which bomber will shoot,
+        And how often it will shoot.
+        '''
+        rand = random.randrange(self.bomb_rate)
+        mob_list = MOBS.sprites()
+
+        if mob_list and rand == 0:
+            bomber = random.choice(mob_list)
+            bomber.drop_bomb()
 
     def update(self):
         '''
         updates the fleet
         '''
         self.move()
+        self.choose_bomber()
 
 
 # Game helper functions
@@ -212,23 +294,33 @@ def show_title_screen():
     title_text = FONT_XL.render("Space War!", 1, WHITE)
     SCREEN.blit(title_text, [128, 204])
 
+
 # def show_stats(player):
 #     pass
+
+
+
 
 def setup():
     '''
     this sets up the whole thing.
     '''
     global STAGE, DONE
-    global PLAYER, SHIP, LASERS, MOBS, FLEET
+    global PLAYER, SHIP, LASERS, MOBS, FLEET, BOMBS, FIREBALL
     # ''' Make game objects '''
-    SHIP = Ship(384, 536, SHIP_IMG)
+    rect = SHIP_IMG.get_rect()
+    rect_x = rect.centerx
+    rect_y = rect.bottom
+
+    SHIP = Ship(WIDTH/2-rect_x, HEIGHT-rect_y, SHIP_IMG)
 
     # ''' Make sprite groups '''
     PLAYER = pygame.sprite.GroupSingle()
     PLAYER.add(SHIP)
 
     LASERS = pygame.sprite.Group()
+    BOMBS = pygame.sprite.Group()
+    FIREBALL = pygame.sprite.Group()
 
     mob1 = Mob(100, 100, ENEMY_IMG)
     mob2 = Mob(300, 100, ENEMY_IMG)
@@ -236,8 +328,6 @@ def setup():
 
     MOBS = pygame.sprite.Group()
     MOBS.add(mob1, mob2, mob3)
-
-
 
     FLEET = Fleet(MOBS)
 
@@ -278,24 +368,29 @@ while not DONE:
 
         if S:
             SHIP.shoot()
+            A_10_SOUND.play()
 
     # Game logic (Check for collisions, update points, etc.)
     if STAGE == PLAYING:
         PLAYER.update()
         LASERS.update()
+        BOMBS.update()
         FLEET.update()
         MOBS.update()
+        FIREBALL.update()
+
 
     # Drawing code (Describe the picture. It isn't actually drawn yet.)
     if STAGE == START:
         show_title_screen()
     elif STAGE == PLAYING:
         SCREEN.fill(BLACK)
+        SCREEN.blit(BACKGROUND_IMG, (0, 0))
         LASERS.draw(SCREEN)
+        BOMBS.draw(SCREEN)
         PLAYER.draw(SCREEN)
         MOBS.draw(SCREEN)
-    else:
-        print("else")
+        FIREBALL.draw(SCREEN)
 
     # Update screen (Actually draw the picture in the window.)
     pygame.display.flip()
