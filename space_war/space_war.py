@@ -15,7 +15,7 @@ pygame.init()
 WIDTH = 1280
 HEIGHT = 720
 SIZE = (WIDTH, HEIGHT)
-TITLE = "Space War"
+TITLE = "Battle of Britain"
 SCREEN = pygame.display.set_mode(SIZE)
 pygame.display.set_caption(TITLE)
 
@@ -45,14 +45,15 @@ LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
 ENEMY_IMG = pygame.image.load('assets/images/messerschmitt-bf-109-a1.png').convert_alpha()
 BOMB_IMG = pygame.image.load('assets/images/laserGreen.png').convert_alpha()
 EXPLOSION = pygame.image.load('assets/images/explosion.png').convert()
-BACKGROUND_IMG = pygame.image.load('assets/images/Background/ocean.jpg')
+BACKGROUND_IMG = pygame.image.load('assets/images/Background/ocean.jpg').convert()
 FIREBALL_IMG = pygame.image.load('assets/images/fireball-effect.png').convert_alpha()
 
 
 # Sounds
-EXPLOSION = pygame.mixer.Sound('assets/sounds/explosion.ogg')
+EXPLOSION_SOUND = pygame.mixer.Sound('assets/sounds/explosion_sound.ogg')
 SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
 A_10_SOUND = pygame.mixer.Sound('assets/sounds/A-10 sound.ogg')
+
 
 # Gloabl Varables
 PLAYER = 0
@@ -61,6 +62,7 @@ MOBS = 0
 FLEET = 0
 BOMBS = 0
 SHIP = 0
+FIREBALL = 0
 
 # Stages
 START = 0
@@ -78,10 +80,12 @@ class Ship(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = image
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.x = ship_x
         self.rect.y = ship_y
 
+        self.heath = 100
         self.speed = 3
 
     def move_left(self):
@@ -119,6 +123,21 @@ class Ship(pygame.sprite.Sprite):
         elif self.rect.right > WIDTH:
             self.rect.right = WIDTH
 
+        hit_list = pygame.sprite.spritecollide(self, BOMBS, True, pygame.sprite.collide_mask)
+        if hit_list:
+            print('Outch')
+            self.heath -= 10
+
+        hit_list = pygame.sprite.spritecollide(self, FIREBALL, True, pygame.sprite.collide_mask)
+        if hit_list:
+            print('Afterkill!')
+            self.heath -= 20
+
+        if self.heath <= 0:
+            print("you died.")
+            self.kill()
+            STAGE = END
+
 class Laser(pygame.sprite.Sprite):
     '''
     This class will hold all the lasers shot. And will move and kill them.
@@ -138,7 +157,6 @@ class Laser(pygame.sprite.Sprite):
         self.rect.y -= self.speed
         if self.rect.bottom < 0:
             self.kill()
-
 
 class Mob(pygame.sprite.Sprite):
     '''
@@ -166,6 +184,9 @@ class Mob(pygame.sprite.Sprite):
 
 
     def after_death(self):
+        '''
+        After the enemy plane is shot this is will do what it needs to do after that.
+        '''
         fireball = FireBall(FIREBALL_IMG)
         fireball.rect.centerx = self.rect.centerx
         fireball.rect.centery = self.rect.bottom
@@ -179,8 +200,6 @@ class Mob(pygame.sprite.Sprite):
         if hit_list:
             self.after_death()
             self.kill()
-
-
 
 class Bomb(pygame.sprite.Sprite):
     '''
@@ -212,7 +231,7 @@ class FireBall(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
 
-        self.speed = 3
+        self.speed = 6
 
     def update(self):
         '''
@@ -291,12 +310,20 @@ def show_title_screen():
     '''
     This will show the start screen.
     '''
-    title_text = FONT_XL.render("Space War!", 1, WHITE)
-    SCREEN.blit(title_text, [128, 204])
+    title_text = FONT_XL.render("Battle of Britain!", 1, WHITE)
+    title_text_width = title_text.get_width()
+    title_text_height = title_text.get_height()
+
+    SCREEN.blit(title_text, [(WIDTH/2) - (title_text_width/2), (HEIGHT/2) - (title_text_height/ 2)])
 
 
-# def show_stats(player):
-#     pass
+def show_stats():
+    '''
+    will blit player heath of screen.
+    '''
+    _hp = FONT_MD.render(str(SHIP.heath), 1, WHITE)
+
+    SCREEN.blit(_hp, [0, 0])
 
 
 
@@ -307,11 +334,11 @@ def setup():
     '''
     global STAGE, DONE
     global PLAYER, SHIP, LASERS, MOBS, FLEET, BOMBS, FIREBALL
+
     # ''' Make game objects '''
     rect = SHIP_IMG.get_rect()
     rect_x = rect.centerx
     rect_y = rect.bottom
-
     SHIP = Ship(WIDTH/2-rect_x, HEIGHT-rect_y, SHIP_IMG)
 
     # ''' Make sprite groups '''
@@ -391,6 +418,7 @@ while not DONE:
         PLAYER.draw(SCREEN)
         MOBS.draw(SCREEN)
         FIREBALL.draw(SCREEN)
+        show_stats()
 
     # Update screen (Actually draw the picture in the window.)
     pygame.display.flip()
