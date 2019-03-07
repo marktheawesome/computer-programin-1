@@ -11,7 +11,7 @@ class Ship(pygame.sprite.Sprite):
     This is the class of the ship. It will
     handle movement, decteding weather it was shhot. and updating.
     '''
-    def __init__(self, ship_x, ship_y, image):
+    def __init__(self, ship_x, ship_y, image,):
         super().__init__()
 
         self.image = image
@@ -20,7 +20,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x = ship_x
         self.rect.y = ship_y
 
-        self.heath = 100
+        self.heath = settings.SHIP_MAX_HEALTH
         self.speed = 3
 
     def move_left(self):
@@ -95,6 +95,7 @@ class Laser(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
+
 class Mob(pygame.sprite.Sprite):
     '''
     This class will house all the enemies and update them.
@@ -140,6 +141,7 @@ class Mob(pygame.sprite.Sprite):
             self.kill()
             settings.EXPLOSION_SOUND.play()
 
+
 class Bomb(pygame.sprite.Sprite):
     '''
     This class will hold all the bombs shot. And will move and kill them.
@@ -160,6 +162,7 @@ class Bomb(pygame.sprite.Sprite):
         if self.rect.top > settings.HEIGHT:
             self.kill()
 
+
 class FireBall(pygame.sprite.Sprite):
     '''
     This class will hold all the bombs shot. And will move and kill them.
@@ -179,6 +182,7 @@ class FireBall(pygame.sprite.Sprite):
         self.rect.y += self.speed
         if self.rect.top > settings.HEIGHT:
             self.kill()
+
 
 class Fleet():
     '''

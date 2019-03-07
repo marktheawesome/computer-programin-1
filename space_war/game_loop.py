@@ -1,5 +1,5 @@
 '''
-This will house the gma loop
+This will house the game loop
 '''
 # pylint: disable=import-error
 import settings
@@ -27,6 +27,18 @@ def show_stats():
 
     settings.SCREEN.blit(_hp, [0, 0])
 
+def draw_hp():
+    '''
+    Draws the hp bar.
+    '''
+    hp_inner_rect = [7, settings.HEIGHT - 50, (settings.SHIP.heath/
+                                               settings.SHIP_MAX_HEALTH) * 100, 25]
+    pygame.draw.rect(settings.SCREEN, settings.GREEN, hp_inner_rect, 0)
+
+    hp_outter_rect = [4, settings.HEIGHT - 53, 103, 28]
+    pygame.draw.rect(settings.SCREEN, settings.BLACK, hp_outter_rect, 5)
+
+
 
 def draw_stage_playing():
     '''
@@ -40,6 +52,7 @@ def draw_stage_playing():
     settings.PLAYER.draw(settings.SCREEN)
     settings.MOBS.draw(settings.SCREEN)
     settings.FIREBALL.draw(settings.SCREEN)
+    draw_hp()
     show_stats()
 
 
@@ -56,7 +69,7 @@ def game_logic():
         settings.MOBS.update()
         settings.FIREBALL.update()
 
-    if settings.SHIP.heath <= 0:
+    if settings.SHIP.heath <= 0 or settings.MOBS == 0:
         settings.STAGE = settings.END
 
 

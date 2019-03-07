@@ -4,9 +4,9 @@ Space Wars is a take on the old classic game space invaders.
 # pylint: disable=import-error
 
 # Imports
-import game_objects
 import pygame
 import settings
+import game_objects
 import game_loop
 
 

@@ -67,7 +67,39 @@ def init(): # pylint: disable=too-many-statements
     A_10_SOUND = pygame.mixer.Sound('assets/sounds/A-10_gun.ogg')
 
 
-    # Gloabl Varables
+    # STATS
+    global SHIP_MAX_HEALTH
+
+    SHIP_MAX_HEALTH = 100
+
+
+    # Stages
+    global START, PLAYING, END, STAGE, DONE
+
+
+    START = 0
+    PLAYING = 1
+    END = 2
+
+    STAGE = START
+
+    DONE = False
+
+
+    # Levels
+    global LEVEL, LEVEL1
+
+    LEVEL = 0
+    LEVEL1 = 1
+
+
+    # Money
+    global MONEY
+
+    MONEY = 100
+
+
+    # Objects
     global PLAYER, LASERS, MOBS, FLEET, BOMBS, SHIP, FIREBALL
 
 
@@ -83,20 +115,3 @@ def init(): # pylint: disable=too-many-statements
     FIREBALL = pygame.sprite.Group()
     MOBS = pygame.sprite.Group()
     FLEET = game_objects.Fleet(MOBS)
-
-    # Stages
-    global START, PLAYING, END, STAGE, DONE
-
-
-    START = 0
-    PLAYING = 1
-    END = 2
-
-    STAGE = START
-
-    DONE = False
-    # Levels
-    global LEVEL, LEVEL1
-
-    LEVEL = 0
-    LEVEL1 = 1
