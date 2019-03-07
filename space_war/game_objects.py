@@ -69,11 +69,9 @@ class Ship(pygame.sprite.Sprite):
                                                True, pygame.sprite.collide_mask)
 
         if hit_list:
-            print('Afterkill!')
             self.heath -= 20
 
         if self.heath <= 0:
-            print("you died.")
             self.kill()
 
 
@@ -140,6 +138,7 @@ class Mob(pygame.sprite.Sprite):
         if hit_list:
             self.after_death()
             self.kill()
+            settings.EXPLOSION_SOUND.play()
 
 class Bomb(pygame.sprite.Sprite):
     '''
