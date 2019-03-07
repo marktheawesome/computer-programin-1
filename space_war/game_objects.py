@@ -1,6 +1,7 @@
 '''
 This file will contain all the game objects (classes). To make main file easer to read.
 '''
+# pylint: disable=import-error
 import random
 import pygame
 import settings
@@ -43,7 +44,7 @@ class Ship(pygame.sprite.Sprite):
         laser.rect.centerx = self.rect.centerx
         laser.rect.centery = self.rect.top
         settings.LASERS.add(laser)
-        # SHOOT_SOUND.play()
+
 
     def update(self):
         '''
@@ -57,12 +58,16 @@ class Ship(pygame.sprite.Sprite):
         elif self.rect.right > settings.WIDTH:
             self.rect.right = settings.WIDTH
 
-        hit_list = pygame.sprite.spritecollide(self, settings.BOMBS, True, pygame.sprite.collide_mask)
+        hit_list = pygame.sprite.spritecollide(self, settings.BOMBS,
+                                               True, pygame.sprite.collide_mask)
         if hit_list:
             print('Outch')
             self.heath -= 10
 
-        hit_list = pygame.sprite.spritecollide(self, settings.FIREBALL, True, pygame.sprite.collide_mask)
+
+        hit_list = pygame.sprite.spritecollide(self, settings.FIREBALL,
+                                               True, pygame.sprite.collide_mask)
+
         if hit_list:
             print('Afterkill!')
             self.heath -= 20
@@ -238,4 +243,3 @@ class Fleet():
         '''
         self.move()
         self.choose_bomber()
-

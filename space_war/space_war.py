@@ -1,7 +1,7 @@
 '''
 Space Wars is a take on the old classic game space invaders.
 '''
-
+# pylint: disable=import-error
 # Imports
 import game_objects
 import pygame
@@ -39,35 +39,18 @@ def setup():
     '''
     this sets up the whole thing.
     '''
-
-    # ''' Make game objects '''
-    # rect = settings.SHIP_IMG.get_rect()
-    # rect_x = rect.centerx
-    # rect_y = rect.bottom
-    # settings.SHIP = game_objects.Ship(settings.WIDTH/2-rect_x,
-    #                                   settings.HEIGHT-rect_y, settings.SHIP_IMG)
-
-    # ''' Make sprite groups '''
-    # settings.PLAYER = pygame.sprite.GroupSingle()
+    # ''' add ship to player sprite groupe '''
     settings.PLAYER.add(settings.SHIP)
-
-    # settings.LASERS = pygame.sprite.Group()
-    # settings.BOMBS = pygame.sprite.Group()
-    # settings.FIREBALL = pygame.sprite.Group()
 
     mob_x_scale = 200
     mob_y_scale = 100
-    # settings.MOBS = pygame.sprite.Group()
+
 
     for _x in range(100, settings.WIDTH-100, mob_x_scale):
         for _y in range(100, 300, mob_y_scale):
             settings.MOBS.add(game_objects.Mob(_x, _y, settings.ENEMY_IMG))
 
 
-    # settings.FLEET = game_objects.Fleet(settings.MOBS)
-
-    # ''' set stage '''
-    settings.STAGE = settings.START
 
 # Game loop
 setup()

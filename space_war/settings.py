@@ -1,13 +1,18 @@
+'''
+    houses all global variables.
+'''
+# pylint: disable=import-error
+# pylint: disable=global-variable-undefined
+
 import pygame
 import game_objects
 
-def init():
+def init(): # pylint: disable=too-many-statements
+    '''
+    This will initialize all variables.
+    '''
     # Window
-    global WIDTH
-    global HEIGHT
-    global SIZE
-    global TITLE
-    global SCREEN
+    global WIDTH, HEIGHT, SIZE, TITLE, SCREEN
 
     WIDTH = 1280
     HEIGHT = 720
@@ -18,18 +23,13 @@ def init():
 
 
     # Timer
-    global CLOCK
-    global REFRESH_RATE
+    global CLOCK, REFRESH_RATE
 
     CLOCK = pygame.time.Clock()
     REFRESH_RATE = 60
 
     # Colors
-    global RED
-    global WHITE
-    global BLACK
-    global YELLOW
-    global GREEN
+    global RED, WHITE, BLACK, YELLOW, GREEN
 
     RED = (255, 0, 0)
     WHITE = (255, 255, 255)
@@ -39,10 +39,7 @@ def init():
 
 
     # Fonts
-    global FONT_SM
-    global FONT_MD
-    global FONT_LG
-    global FONT_XL
+    global FONT_SM, FONT_MD, FONT_LG, FONT_XL
 
     FONT_SM = pygame.font.Font(None, 24)
     FONT_MD = pygame.font.Font(None, 32)
@@ -51,13 +48,7 @@ def init():
 
 
     # Images
-    global SHIP_IMG
-    global LASER_IMG
-    global ENEMY_IMG
-    global BOMB_IMG
-    global EXPLOSION
-    global BACKGROUND_IMG
-    global FIREBALL_IMG
+    global SHIP_IMG, LASER_IMG, ENEMY_IMG, BOMB_IMG, EXPLOSION, BACKGROUND_IMG, FIREBALL_IMG
 
     SHIP_IMG = pygame.image.load('assets/images/spitfire.png').convert_alpha()
     LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
@@ -69,9 +60,7 @@ def init():
 
 
     # Sounds
-    global EXPLOSION_SOUND
-    global SHOOT_SOUND
-    global A_10_SOUND
+    global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND
 
     EXPLOSION_SOUND = pygame.mixer.Sound('assets/sounds/explosion_sound.ogg')
     SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
@@ -79,13 +68,7 @@ def init():
 
 
     # Gloabl Varables
-    global PLAYER
-    global LASERS
-    global MOBS
-    global FLEET
-    global BOMBS
-    global SHIP
-    global FIREBALL
+    global PLAYER, LASERS, MOBS, FLEET, BOMBS, SHIP, FIREBALL
 
 
     rect = SHIP_IMG.get_rect()
@@ -102,22 +85,18 @@ def init():
     FLEET = game_objects.Fleet(MOBS)
 
     # Stages
-    global STAGE
-    global START
-    global PLAYING
-    global END
-    global DONE
+    global START, PLAYING, END, STAGE, DONE
 
-    STAGE = -1
 
     START = 0
     PLAYING = 1
     END = 2
 
+    STAGE = START
+
     DONE = False
     # Levels
-    global LEVEL
-    global LEVEL1
+    global LEVEL, LEVEL1
 
     LEVEL = 0
     LEVEL1 = 1
