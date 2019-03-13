@@ -48,7 +48,7 @@ def init(): # pylint: disable=too-many-statements
     FONT_SM = pygame.font.Font(None, 24)
     FONT_MD = pygame.font.Font(None, 32)
     FONT_LG = pygame.font.Font(None, 64)
-    FONT_XL = pygame.font.Font("assets/fonts/spacerangerboldital.ttf", 96)
+    FONT_XL = pygame.font.Font("assets/fonts/times.ttf", 96)
 
 
     # Images

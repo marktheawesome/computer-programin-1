@@ -23,7 +23,7 @@ def show_lost_screen():
     This will show the lost screen.
     '''
     title_text = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.WHITE)
-    title_text_R = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.RED)
+    title_text_r = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.RED)
     title_text_width = title_text.get_width()
     title_text_height = title_text.get_height()
 
@@ -39,14 +39,15 @@ def show_lost_screen():
             if settings.LOST_FRAME >= 200 and settings.ALFA <= 255:
                 settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
                                                   settings.HEIGHT/2 - title_text_height/2])
-                settings.SUFACE.blit(title_text_R, [(settings.WIDTH/2) - (title_text_width/2),
+                settings.SUFACE.blit(title_text_r, [(settings.WIDTH/2) - (title_text_width/2),
                                                     settings.HEIGHT/2 - title_text_height/2])
             else:
-                settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),settings.HEIGHT/2 - title_text_height/2])
+                settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+                                                  settings.HEIGHT/2 - title_text_height/2])
 
         break
 
-    if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255 and settings.LOST_FRAME >=199:
+    if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255 and settings.LOST_FRAME >= 199:
         settings.ALFA += 1
         print(settings.ALFA)
 
