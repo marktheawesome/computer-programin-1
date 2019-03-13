@@ -29,13 +29,17 @@ def init(): # pylint: disable=too-many-statements
     REFRESH_RATE = 60
 
     # Colors
-    global RED, WHITE, BLACK, YELLOW, GREEN
+    global RED, WHITE, BLACK, YELLOW, GREEN, ALFA, BLACK_TRANS
+
 
     RED = (255, 0, 0)
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     YELLOW = (255, 255, 0)
     GREEN = (100, 255, 100)
+
+    ALFA = 0
+
 
 
     # Fonts
@@ -48,7 +52,8 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Images
-    global SHIP_IMG, LASER_IMG, ENEMY_IMG, BOMB_IMG, EXPLOSION, BACKGROUND_IMG, FIREBALL_IMG
+    global SHIP_IMG, LASER_IMG, ENEMY_IMG, BOMB_IMG
+    global EXPLOSION, BACKGROUND_IMG, FIREBALL_IMG, UNION_JACK_IMG
 
     SHIP_IMG = pygame.image.load('assets/images/spitfire.png').convert_alpha()
     LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
@@ -57,7 +62,7 @@ def init(): # pylint: disable=too-many-statements
     EXPLOSION = pygame.image.load('assets/images/explosion.png').convert()
     BACKGROUND_IMG = pygame.image.load('assets/images/Background/ocean.jpg').convert()
     FIREBALL_IMG = pygame.image.load('assets/images/fireball-effect.png').convert_alpha()
-
+    UNION_JACK_IMG = pygame.image.load('assets/images/UnionJack.png').convert()
 
     # Sounds
     global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND
@@ -74,13 +79,14 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Stages
-    global START, PLAYING, END, LOST, STAGE, DONE
+    global START, PLAYING, END, LOST, WIN, STAGE, DONE
 
 
     START = 0
     PLAYING = 1
     END = 2
     LOST = 3
+    WIN = 4
 
     STAGE = START
 
@@ -116,3 +122,18 @@ def init(): # pylint: disable=too-many-statements
     FIREBALL = pygame.sprite.Group()
     MOBS = pygame.sprite.Group()
     FLEET = game_objects.Fleet(MOBS)
+
+
+    # counter
+
+    global LOST_FRAME
+
+    LOST_FRAME = 0
+
+    # Surface
+
+    global SUFACE
+
+    SUFACE = pygame.Surface(SIZE)
+    SUFACE.fill(BLACK)
+    # SUFACE.set_alpha(ALFA)

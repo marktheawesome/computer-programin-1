@@ -22,14 +22,51 @@ def show_lost_screen():
     '''
     This will show the lost screen.
     '''
-    # settings.SCREEN.fill(settings.BLACK)
     title_text = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.WHITE)
+    title_text_R = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.RED)
     title_text_width = title_text.get_width()
     title_text_height = title_text.get_height()
 
+
     for _m in settings.MOBS:
-        settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
-                                          _m.rect.y -settings.HEIGHT - title_text_height])
+        if _m.rect.y - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 - title_text_height/2):
+            text_height = _m.rect.y -settings.HEIGHT - title_text_height
+            text_width = (settings.WIDTH/2) - (title_text_width/2)
+
+            settings.SCREEN.blit(title_text, [text_width, text_height])
+
+        else:
+            if settings.LOST_FRAME >= 200 and settings.ALFA >=255:
+                settings.SUFACE.blit(title_text_R, [(settings.WIDTH/2) - (title_text_width/2),
+                                                    settings.HEIGHT/2 - title_text_height/2])
+            else:
+                settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),settings.HEIGHT/2 - title_text_height/2])
+
+        break
+
+    if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255:
+        settings.ALFA += 1
+        print(settings.ALFA)
+
+    settings.LOST_FRAME += 1
+    settings.SUFACE.set_alpha(settings.ALFA)
+
+    settings.SCREEN.blit(settings.SUFACE, (0, 0))
+
+
+
+
+def show_win_screen():
+    '''
+    This will show the win screen.
+    '''
+    settings.SCREEN.fill(settings.BLACK)
+    settings.SCREEN.blit(settings.UNION_JACK_IMG, (0, 0))
+    title_text = settings.FONT_XL.render("We Win!!!", 1, settings.WHITE)
+    title_text_width = title_text.get_width()
+    title_text_height = title_text.get_height()
+    settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+                                      settings.HEIGHT - title_text_height])
 
 
 def show_stats():
@@ -39,6 +76,7 @@ def show_stats():
     _hp = settings.FONT_MD.render(str(settings.SHIP.heath), 1, settings.WHITE)
 
     settings.SCREEN.blit(_hp, [0, 0])
+
 
 def draw_hp():
     '''
@@ -50,7 +88,6 @@ def draw_hp():
 
     hp_outter_rect = [4, settings.HEIGHT - 53, 103, 28]
     pygame.draw.rect(settings.SCREEN, settings.BLACK, hp_outter_rect, 5)
-
 
 
 def draw_stage_playing():
@@ -88,9 +125,11 @@ def game_logic():
         settings.FLEET.update()
         settings.FIREBALL.update()
 
-    if settings.SHIP.heath <= 0 or settings.MOBS == 0:
+    if settings.SHIP.heath <= 0:
         settings.STAGE = settings.LOST
 
+    if len(settings.MOBS) == 0:
+        settings.STAGE = settings.WIN
 
 
 
@@ -133,6 +172,10 @@ def game_loop():
                 elif settings.STAGE == settings.PLAYING:
                     if event.key == pygame.K_SPACE:
                         settings.SHIP.shoot()
+
+                    elif event.key == pygame.K_k:
+                        settings.STAGE = settings.LOST
+
                     elif event.key == pygame.K_SPACE:
                         settings.STAGE = settings.LOST
 
@@ -145,6 +188,7 @@ def game_loop():
         if settings.STAGE == settings.PLAYING:
             ship_movement(_a, _d)
             continuous_shooting(_s)
+
         elif settings.STAGE == settings.LOST:
             settings.FLEET.update()
 
@@ -160,6 +204,8 @@ def game_loop():
         elif settings.STAGE == settings.LOST:
             show_lost_screen()
 
+        elif settings.STAGE == settings.WIN:
+            show_win_screen()
 
 
         # Update screen (Actually draw the picture in the window.)
