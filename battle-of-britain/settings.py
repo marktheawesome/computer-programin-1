@@ -29,7 +29,7 @@ def init(): # pylint: disable=too-many-statements
     REFRESH_RATE = 60
 
     # Colors
-    global RED, WHITE, BLACK, YELLOW, GREEN, ALFA, BLACK_TRANS
+    global RED, WHITE, BLACK, YELLOW, GREEN, ALFA
 
 
     RED = (255, 0, 0)

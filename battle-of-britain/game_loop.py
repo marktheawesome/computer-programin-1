@@ -36,7 +36,9 @@ def show_lost_screen():
             settings.SCREEN.blit(title_text, [text_width, text_height])
 
         else:
-            if settings.LOST_FRAME >= 200 and settings.ALFA >=255:
+            if settings.LOST_FRAME >= 200 and settings.ALFA <= 255:
+                settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+                                                  settings.HEIGHT/2 - title_text_height/2])
                 settings.SUFACE.blit(title_text_R, [(settings.WIDTH/2) - (title_text_width/2),
                                                     settings.HEIGHT/2 - title_text_height/2])
             else:
@@ -44,7 +46,7 @@ def show_lost_screen():
 
         break
 
-    if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255:
+    if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255 and settings.LOST_FRAME >=199:
         settings.ALFA += 1
         print(settings.ALFA)
 
