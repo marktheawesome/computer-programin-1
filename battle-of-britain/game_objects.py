@@ -138,11 +138,12 @@ class Mob(pygame.sprite.Sprite):
         hit_list = None
         if not self.rect.bottom < 0:
             hit_list = pygame.sprite.spritecollide(self, settings.LASERS,
-                                                True, pygame.sprite.collide_mask)
+                                                   True, pygame.sprite.collide_mask)
         if hit_list:
             self.after_death()
             self.kill()
             settings.EXPLOSION_SOUND.play()
+
 
 class Bomb(pygame.sprite.Sprite):
     '''
@@ -224,7 +225,7 @@ class Fleet():
         if hits_edge:
             self.reverse()
             self.move_down()
-        elif len(on_screen) == 0 :
+        elif not on_screen:
             self.move_down()
 
     def reverse(self):

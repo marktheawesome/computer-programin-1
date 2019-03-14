@@ -2,8 +2,10 @@
 This will house the game loop
 '''
 # pylint: disable=import-error
-import settings
+import random
 import pygame
+import settings
+
 
 # Game helper functions
 def show_title_screen():
@@ -23,14 +25,15 @@ def show_lost_screen():
     '''
     This will show the lost screen.
     '''
-    title_text = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.WHITE)
-    title_text_r = settings.FONT_XL.render("GAME OVER!!!!", 1, settings.RED)
+    title_text = settings.FONT_XL.render("GAME OVER", 1, settings.WHITE)
+    title_text_r = settings.FONT_XL.render("GAME OVER", 1, settings.RED)
     title_text_width = title_text.get_width()
     title_text_height = title_text.get_height()
 
 
     for _m in settings.MOBS:
-        if _m.rect.y - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 - title_text_height/2):
+        if _m.rect.y - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 -
+                                                               title_text_height/2):
             text_height = _m.rect.y -settings.HEIGHT - title_text_height
             text_width = (settings.WIDTH/2) - (title_text_width/2)
 
@@ -50,7 +53,7 @@ def show_lost_screen():
 
     if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255 and settings.LOST_FRAME >= 199:
         settings.ALFA += 1
-        print(settings.ALFA)
+        # print(settings.ALFA)
 
     settings.LOST_FRAME += 1
     settings.SUFACE.set_alpha(settings.ALFA)
@@ -120,6 +123,15 @@ def game_logic():
         settings.FLEET.update()
         settings.MOBS.update()
         settings.FIREBALL.update()
+        temp = random.randint(0, 10)
+        # print(temp)
+        if temp == 5 and not settings.PLAYED_END_GAME:
+            settings.END_GAME_SOUND.play()
+            settings.PLAYED_END_GAME = True
+        #     end_game_start =time.time()
+        # elif time.time() - end_game_start == 16:
+        #     settings.MOVIE.play()
+        #     settings.SCREEN.blit(settings.MOVIE_SCREEN,(0,0))
 
     elif settings.STAGE == settings.LOST:
         settings.LASERS.update()
@@ -130,7 +142,7 @@ def game_logic():
     if settings.SHIP.heath <= 0:
         settings.STAGE = settings.LOST
 
-    if len(settings.MOBS) == 0:
+    if not settings.MOBS:
         settings.STAGE = settings.WIN
 
 
@@ -179,6 +191,8 @@ def game_loop():
 
                     elif event.key == pygame.K_SPACE:
                         settings.STAGE = settings.LOST
+
+
 
         # ''' poll key states '''
         _state = pygame.key.get_pressed()

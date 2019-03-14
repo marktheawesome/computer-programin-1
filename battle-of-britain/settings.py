@@ -65,11 +65,13 @@ def init(): # pylint: disable=too-many-statements
     UNION_JACK_IMG = pygame.image.load('assets/images/UnionJack.png').convert()
 
     # Sounds
-    global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND
+    global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND, END_GAME_SOUND, PLAYED_END_GAME
 
     EXPLOSION_SOUND = pygame.mixer.Sound('assets/sounds/explosion_sound.ogg')
     SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
     A_10_SOUND = pygame.mixer.Sound('assets/sounds/A-10_gun.ogg')
+    END_GAME_SOUND = pygame.mixer.Sound('assets/sounds/MW2_TACTICAL_NUKE .ogg')
+    PLAYED_END_GAME = False
 
 
     # STATS
@@ -107,7 +109,7 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Objects
-    global PLAYER, LASERS, MOBS, FLEET, BOMBS, SHIP, FIREBALL
+    global PLAYER, LASERS, MOBS, FLEET, BOMBS, SHIP, FIREBALL, TEMP_MOB
 
 
     rect = SHIP_IMG.get_rect()
@@ -122,16 +124,16 @@ def init(): # pylint: disable=too-many-statements
     FIREBALL = pygame.sprite.Group()
     MOBS = pygame.sprite.Group()
     FLEET = game_objects.Fleet(MOBS)
+    TEMP_MOB = pygame.sprite.Group()
 
 
     # counter
-
     global LOST_FRAME
 
     LOST_FRAME = 0
 
-    # Surface
 
+    # Surface
     global SUFACE
 
     SUFACE = pygame.Surface(SIZE)

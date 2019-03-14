@@ -27,7 +27,9 @@ def setup():
     mob_y_scale = 100
 
     for _x in range(100, settings.WIDTH-100, mob_x_scale):
+        # makes y value for the location, based on scale
         for _y in range(-settings.HEIGHT, 300, mob_y_scale):
+            # adds the enemy to the class
             settings.MOBS.add(game_objects.Mob(_x, _y, settings.ENEMY_IMG))
 
 # Game loop
