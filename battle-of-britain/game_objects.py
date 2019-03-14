@@ -114,10 +114,11 @@ class Mob(pygame.sprite.Sprite):
         '''
         This is acctually shoot the enemy lasers
         '''
-        bomb = Bomb(settings.BOMB_IMG)
-        bomb.rect.centerx = self.rect.centerx
-        bomb.rect.centery = self.rect.bottom
-        settings.BOMBS.add(bomb)
+        if not self.rect.bottom < 0:
+            bomb = Bomb(settings.BOMB_IMG)
+            bomb.rect.centerx = self.rect.centerx
+            bomb.rect.centery = self.rect.bottom
+            settings.BOMBS.add(bomb)
 
 
 
@@ -134,13 +135,14 @@ class Mob(pygame.sprite.Sprite):
         '''
         This will check to see if the mobs have been hit.
         '''
-        hit_list = pygame.sprite.spritecollide(self, settings.LASERS,
-                                               True, pygame.sprite.collide_mask)
+        hit_list = None
+        if not self.rect.bottom < 0:
+            hit_list = pygame.sprite.spritecollide(self, settings.LASERS,
+                                                True, pygame.sprite.collide_mask)
         if hit_list:
             self.after_death()
             self.kill()
             settings.EXPLOSION_SOUND.play()
-
 
 class Bomb(pygame.sprite.Sprite):
     '''
@@ -199,20 +201,30 @@ class Fleet():
         This function will move the fleet.
         '''
         hits_edge = False
+        on_screen = []
 
         for _m in settings.MOBS:
-            if self.moving_right:
-                _m.rect.x += self.speed
-                if _m.rect.right >= settings.WIDTH:
-                    hits_edge = True
 
+            if not _m.rect.bottom <= 0:
+                on_screen.append(_m)
+
+                if self.moving_right:
+                    _m.rect.x += self.speed
+
+                    if _m.rect.right >= settings.WIDTH and _m.rect.bottom >= 0:
+                        hits_edge = True
+
+                else:
+                    _m.rect.x -= self.speed
+                    if _m.rect.left <= 0:
+                        hits_edge = True
             else:
-                _m.rect.x -= self.speed
-                if _m.rect.left <= 0:
-                    hits_edge = True
+                pass
 
         if hits_edge:
             self.reverse()
+            self.move_down()
+        elif len(on_screen) == 0 :
             self.move_down()
 
     def reverse(self):

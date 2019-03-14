@@ -18,6 +18,7 @@ def show_title_screen():
     settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
                                       (settings.HEIGHT/2) - (title_text_height/ 2)])
 
+
 def show_lost_screen():
     '''
     This will show the lost screen.
@@ -55,8 +56,6 @@ def show_lost_screen():
     settings.SUFACE.set_alpha(settings.ALFA)
 
     settings.SCREEN.blit(settings.SUFACE, (0, 0))
-
-
 
 
 def show_win_screen():
@@ -133,7 +132,6 @@ def game_logic():
 
     if len(settings.MOBS) == 0:
         settings.STAGE = settings.WIN
-
 
 
 def ship_movement(_a, _d):

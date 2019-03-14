@@ -136,4 +136,3 @@ def init(): # pylint: disable=too-many-statements
 
     SUFACE = pygame.Surface(SIZE)
     SUFACE.fill(BLACK)
-    # SUFACE.set_alpha(ALFA)
