@@ -2,6 +2,7 @@
 This will house the game loop
 '''
 # pylint: disable=import-error
+import time
 import random
 import pygame
 import settings
@@ -79,8 +80,10 @@ def show_stats():
     will blit player heath of screen.
     '''
     _hp = settings.FONT_MD.render(str(settings.SHIP.heath), 1, settings.WHITE)
+    _kc = settings.FONT_MD.render(str(settings.KILLS_CONFIRMED), 1, settings.WHITE)
 
     settings.SCREEN.blit(_hp, [0, 0])
+    settings.SCREEN.blit(_kc, [settings.WIDTH-_kc.get_width(), 0])
 
 
 def draw_hp():
@@ -123,15 +126,13 @@ def game_logic():
         settings.FLEET.update()
         settings.MOBS.update()
         settings.FIREBALL.update()
-        temp = random.randint(0, 10)
-        # print(temp)
-        if temp == 5 and not settings.PLAYED_END_GAME:
+        temp = random.randint(0, 1000)
+
+
+        if temp == 5 and not settings.PLAYED_END_GAME and settings.KILLS_CONFIRMED > 50:
             settings.END_GAME_SOUND.play()
             settings.PLAYED_END_GAME = True
-        #     end_game_start =time.time()
-        # elif time.time() - end_game_start == 16:
-        #     settings.MOVIE.play()
-        #     settings.SCREEN.blit(settings.MOVIE_SCREEN,(0,0))
+
 
     elif settings.STAGE == settings.LOST:
         settings.LASERS.update()
@@ -201,6 +202,7 @@ def game_loop():
         _d = _state[pygame.K_d]
 
         if settings.STAGE == settings.PLAYING:
+            settings.PLAYING_FRAME += 1
             ship_movement(_a, _d)
             continuous_shooting(_s)
 

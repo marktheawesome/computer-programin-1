@@ -54,6 +54,7 @@ def init(): # pylint: disable=too-many-statements
     # Images
     global SHIP_IMG, LASER_IMG, ENEMY_IMG, BOMB_IMG
     global EXPLOSION, BACKGROUND_IMG, FIREBALL_IMG, UNION_JACK_IMG
+    global END_GAME_IMG
 
     SHIP_IMG = pygame.image.load('assets/images/spitfire.png').convert_alpha()
     LASER_IMG = pygame.image.load('assets/images/laserRed.png').convert_alpha()
@@ -63,6 +64,7 @@ def init(): # pylint: disable=too-many-statements
     BACKGROUND_IMG = pygame.image.load('assets/images/Background/ocean.jpg').convert()
     FIREBALL_IMG = pygame.image.load('assets/images/fireball-effect.png').convert_alpha()
     UNION_JACK_IMG = pygame.image.load('assets/images/UnionJack.png').convert()
+    END_GAME_IMG = pygame.image.load('assets/images/nuckler.jpeg').convert()
 
     # Sounds
     global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND, END_GAME_SOUND, PLAYED_END_GAME
@@ -75,9 +77,10 @@ def init(): # pylint: disable=too-many-statements
 
 
     # STATS
-    global SHIP_MAX_HEALTH
+    global SHIP_MAX_HEALTH, KILLS_CONFIRMED
 
     SHIP_MAX_HEALTH = 100
+    KILLS_CONFIRMED = 0
 
 
     # Stages
@@ -128,8 +131,9 @@ def init(): # pylint: disable=too-many-statements
 
 
     # counter
-    global LOST_FRAME
+    global LOST_FRAME, PLAYING_FRAME
 
+    PLAYING_FRAME = 0
     LOST_FRAME = 0
 
 

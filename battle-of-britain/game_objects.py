@@ -140,6 +140,7 @@ class Mob(pygame.sprite.Sprite):
             hit_list = pygame.sprite.spritecollide(self, settings.LASERS,
                                                    True, pygame.sprite.collide_mask)
         if hit_list:
+            settings.KILLS_CONFIRMED +=1
             self.after_death()
             self.kill()
             settings.EXPLOSION_SOUND.play()
