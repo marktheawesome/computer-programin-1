@@ -140,7 +140,7 @@ class Mob(pygame.sprite.Sprite):
             hit_list = pygame.sprite.spritecollide(self, settings.LASERS,
                                                    True, pygame.sprite.collide_mask)
         if hit_list:
-            settings.KILLS_CONFIRMED +=1
+            settings.KILLS_CONFIRMED += 1
             self.after_death()
             self.kill()
             settings.EXPLOSION_SOUND.play()
@@ -198,6 +198,7 @@ class Fleet():
         self.moving_right = True
         self.drop_speed = 5
         self.bomb_rate = 60
+
     def move(self):
         '''
         This function will move the fleet.

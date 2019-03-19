@@ -4,12 +4,12 @@ Space Wars is a take on the old classic game space invaders.
 # pylint: disable=import-error
 
 # Imports
+
 import random
 import pygame
 import settings
 import game_objects
 import game_loop
-
 
 # Initialize game engines
 pygame.mixer.pre_init(44100, -16, 1, 512)
@@ -25,7 +25,7 @@ def setup():
     settings.PLAYER.add(settings.SHIP)
 
     mob_x_scale = 200
-    mob_y_scale = 100
+    mob_y_scale = 75
 
     for _x in range(100, settings.WIDTH-100, mob_x_scale):
         # makes y value for the location, based on scale

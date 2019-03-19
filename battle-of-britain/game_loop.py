@@ -54,7 +54,6 @@ def show_lost_screen():
 
     if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255 and settings.LOST_FRAME >= 199:
         settings.ALFA += 1
-        # print(settings.ALFA)
 
     settings.LOST_FRAME += 1
     settings.SUFACE.set_alpha(settings.ALFA)
