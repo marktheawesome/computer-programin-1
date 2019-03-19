@@ -2,7 +2,6 @@
 This will house the game loop
 '''
 # pylint: disable=import-error
-import time
 import random
 import pygame
 import settings
