@@ -3,8 +3,14 @@ This will house the game loop
 '''
 # pylint: disable=import-error
 import random
+import time
+import math
 import pygame
 import settings
+import viedo
+
+viedo.init()
+
 
 
 # Game helper functions
@@ -111,12 +117,15 @@ def draw_stage_playing():
     draw_hp()
     show_stats()
 
+    if settings.SHOW_VIEDO:
+        viedo.show_video()
 
 def game_logic():
     '''
     This is all the code that will update the classes.
     During the playing portion of the game.
     '''
+
     if settings.STAGE == settings.PLAYING:
         settings.PLAYER.update()
         settings.LASERS.update()
@@ -127,9 +136,17 @@ def game_logic():
         temp = random.randint(0, 1000)
 
 
-        if temp == 5 and not settings.PLAYED_END_GAME and settings.KILLS_CONFIRMED > 50:
+        if temp == 5 and not settings.PLAYED_END_GAME and settings.KILLS_CONFIRMED > 0:
             settings.END_GAME_SOUND.play()
             settings.PLAYED_END_GAME = True
+            settings.end_game_start_time = int(time.time())
+            settings.end_game_start_time = math.ceil(settings.end_game_start_time)
+            settings.sound_length = int(settings.END_GAME_SOUND.get_length())
+
+
+        if math.ceil(time.time()) - settings.end_game_start_time >= settings.sound_length and settings.PLAYED_END_GAME:
+            settings.SHOW_VIEDO = True
+            print(time.time(), "play viedo.")
 
 
     elif settings.STAGE == settings.LOST:
@@ -213,6 +230,7 @@ def game_loop():
         # Drawing code (Describe the picture. It isn't actually drawn yet.)
         draw_stage_playing()
 
+
         if settings.STAGE == settings.START:
             show_title_screen()
 
@@ -221,6 +239,8 @@ def game_loop():
 
         elif settings.STAGE == settings.WIN:
             show_win_screen()
+
+        settings.FRAME_NUMBER += 1
 
 
         # Update screen (Actually draw the picture in the window.)

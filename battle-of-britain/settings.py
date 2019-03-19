@@ -68,12 +68,15 @@ def init(): # pylint: disable=too-many-statements
 
     # Sounds
     global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND, END_GAME_SOUND, PLAYED_END_GAME
+    global end_game_start_time, sound_length
 
     EXPLOSION_SOUND = pygame.mixer.Sound('assets/sounds/explosion_sound.ogg')
     SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
     A_10_SOUND = pygame.mixer.Sound('assets/sounds/A-10_gun.ogg')
     END_GAME_SOUND = pygame.mixer.Sound('assets/sounds/MW2_TACTICAL_NUKE .ogg')
     PLAYED_END_GAME = False
+    end_game_start_time = float(0)
+    sound_length = float(100000000)
 
 
     # STATS
@@ -84,7 +87,7 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Stages
-    global START, PLAYING, END, LOST, WIN, STAGE, DONE
+    global START, PLAYING, END, LOST, WIN, STAGE, DONE, SHOW_VIEDO
 
 
     START = 0
@@ -96,6 +99,8 @@ def init(): # pylint: disable=too-many-statements
     STAGE = START
 
     DONE = False
+
+    SHOW_VIEDO = False
 
 
     # Levels
@@ -131,10 +136,11 @@ def init(): # pylint: disable=too-many-statements
 
 
     # counter
-    global LOST_FRAME, PLAYING_FRAME
+    global LOST_FRAME, PLAYING_FRAME, FRAME_NUMBER
 
     PLAYING_FRAME = 0
     LOST_FRAME = 0
+    FRAME_NUMBER = 0
 
 
     # Surface
