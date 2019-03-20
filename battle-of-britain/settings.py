@@ -68,15 +68,15 @@ def init(): # pylint: disable=too-many-statements
 
     # Sounds
     global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND, END_GAME_SOUND, PLAYED_END_GAME
-    global end_game_start_time, sound_length
+    global END_GAME_START_TIME, SOUND_LENGTH
 
     EXPLOSION_SOUND = pygame.mixer.Sound('assets/sounds/explosion_sound.ogg')
     SHOOT_SOUND = pygame.mixer.Sound('assets/sounds/shoot.wav')
     A_10_SOUND = pygame.mixer.Sound('assets/sounds/A-10_gun.ogg')
     END_GAME_SOUND = pygame.mixer.Sound('assets/sounds/MW2_TACTICAL_NUKE .ogg')
     PLAYED_END_GAME = False
-    end_game_start_time = float(0)
-    sound_length = float(100000000)
+    END_GAME_START_TIME = float(0)
+    SOUND_LENGTH = float(100000000)
 
 
     # STATS

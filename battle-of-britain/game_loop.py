@@ -2,6 +2,8 @@
 This will house the game loop
 '''
 # pylint: disable=import-error
+# pylint: disable=global-at-module-level
+
 import random
 import time
 import math
@@ -11,7 +13,7 @@ import viedo
 
 viedo.init()
 
-
+global NEW_HEIGHT
 
 # Game helper functions
 def show_title_screen():
@@ -27,35 +29,59 @@ def show_title_screen():
                                       (settings.HEIGHT/2) - (title_text_height/ 2)])
 
 
+NEW_HEIGHT = settings.HEIGHT * (-1/4)
+
 def show_lost_screen():
     '''
     This will show the lost screen.
     '''
+    global NEW_HEIGHT
+
     title_text = settings.FONT_XL.render("GAME OVER", 1, settings.WHITE)
     title_text_r = settings.FONT_XL.render("GAME OVER", 1, settings.RED)
     title_text_width = title_text.get_width()
     title_text_height = title_text.get_height()
 
 
-    for _m in settings.MOBS:
-        if _m.rect.y - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 -
-                                                               title_text_height/2):
-            text_height = _m.rect.y -settings.HEIGHT - title_text_height
-            text_width = (settings.WIDTH/2) - (title_text_width/2)
+    # for _m in settings.MOBS:
+    #     if _m.rect.y - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 -
+    #                                                            title_text_height/2):
+    #         text_height = _m.rect.y -settings.HEIGHT - title_text_height
+    #         text_width = (settings.WIDTH/2) - (title_text_width/2)
 
-            settings.SCREEN.blit(title_text, [text_width, text_height])
+    #         settings.SCREEN.blit(title_text, [text_width, text_height])
 
+    #     else:
+    #         if settings.LOST_FRAME >= 200 and settings.ALFA <= 255:
+    #             settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+    #                                               settings.HEIGHT/2 - title_text_height/2])
+    #             settings.SUFACE.blit(title_text_r, [(settings.WIDTH/2) - (title_text_width/2),
+    #                                                 settings.HEIGHT/2 - title_text_height/2])
+    #         else:
+    #             settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+    #                                               settings.HEIGHT/2 - title_text_height/2])
+
+    #     break
+
+
+    if NEW_HEIGHT - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 -
+                                                            title_text_height/2):
+        text_height = NEW_HEIGHT - settings.HEIGHT - title_text_height
+        text_width = (settings.WIDTH/2) - (title_text_width/2)
+
+        settings.SCREEN.blit(title_text, [text_width, text_height])
+        NEW_HEIGHT += 5
+
+    else:
+        if settings.LOST_FRAME >= 200 and settings.ALFA <= 255:
+            settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+                                                settings.HEIGHT/2 - title_text_height/2])
+            settings.SUFACE.blit(title_text_r, [(settings.WIDTH/2) - (title_text_width/2),
+                                                settings.HEIGHT/2 - title_text_height/2])
         else:
-            if settings.LOST_FRAME >= 200 and settings.ALFA <= 255:
-                settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
-                                                  settings.HEIGHT/2 - title_text_height/2])
-                settings.SUFACE.blit(title_text_r, [(settings.WIDTH/2) - (title_text_width/2),
-                                                    settings.HEIGHT/2 - title_text_height/2])
-            else:
-                settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
-                                                  settings.HEIGHT/2 - title_text_height/2])
+            settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+                                                settings.HEIGHT/2 - title_text_height/2])
 
-        break
 
     if settings.LOST_FRAME % 2 == 0 and settings.ALFA <= 255 and settings.LOST_FRAME >= 199:
         settings.ALFA += 1
@@ -120,6 +146,25 @@ def draw_stage_playing():
     if settings.SHOW_VIEDO:
         viedo.show_video()
 
+
+def end_game_sound():
+    '''
+    This will dertemin weather to bring arounf the end game
+    '''
+    temp = random.randint(0, 1000)
+    if temp == 5 and not settings.PLAYED_END_GAME and settings.KILLS_CONFIRMED > 50:
+        settings.END_GAME_SOUND.play()
+        settings.PLAYED_END_GAME = True
+        settings.END_GAME_START_TIME = int(time.time())
+        settings.END_GAME_START_TIME = math.ceil(settings.END_GAME_START_TIME)
+        settings.SOUND_LENGTH = int(settings.END_GAME_SOUND.get_length())
+
+
+    if (math.ceil(time.time()) - settings.END_GAME_START_TIME >=
+            settings.SOUND_LENGTH and settings.PLAYED_END_GAME):
+        settings.SHOW_VIEDO = True
+
+
 def game_logic():
     '''
     This is all the code that will update the classes.
@@ -133,20 +178,9 @@ def game_logic():
         settings.FLEET.update()
         settings.MOBS.update()
         settings.FIREBALL.update()
-        temp = random.randint(0, 1000)
+        end_game_sound()
 
 
-        if temp == 5 and not settings.PLAYED_END_GAME and settings.KILLS_CONFIRMED > 0:
-            settings.END_GAME_SOUND.play()
-            settings.PLAYED_END_GAME = True
-            settings.end_game_start_time = int(time.time())
-            settings.end_game_start_time = math.ceil(settings.end_game_start_time)
-            settings.sound_length = int(settings.END_GAME_SOUND.get_length())
-
-
-        if math.ceil(time.time()) - settings.end_game_start_time >= settings.sound_length and settings.PLAYED_END_GAME:
-            settings.SHOW_VIEDO = True
-            print(time.time(), "play viedo.")
 
 
     elif settings.STAGE == settings.LOST:
