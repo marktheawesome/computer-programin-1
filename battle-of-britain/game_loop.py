@@ -167,7 +167,7 @@ def end_game_sound():
         settings.SHOW_VIEDO = True
 
 
-def game_logic(index):
+def game_logic():
     '''
     This is all the code that will update the classes.
     During the playing portion of the game.
@@ -195,7 +195,7 @@ def game_logic(index):
     if not settings.MOBS or settings.VIEDO_DONE:
         settings.STAGE = settings.WIN
     if not settings.CODE:
-        check_code(index)
+        check_code()
 
 
 def ship_movement(_a, _d):
@@ -220,7 +220,7 @@ def continuous_shooting(_s):
         settings.A_10_SOUND.play()
 
 
-def check_code(index):
+def check_code():
     '''
     check to see if the code was entered.
     '''
@@ -235,19 +235,19 @@ def check_code(index):
 
     _code = [_up, _up, _down, _down, _left, _right, _left, _right, _b, _a, _enter]
 
-    if len(KEYS) <= len(_code) and KEYS == _code:
+    if len(KEYS) > 11:
+        del KEYS[0]
+
+    if KEYS == _code:
         settings.CODE = True
         print("GG")
-    elif KEYS[index-12:-1] == _code:
-        settings.CODE = True
-        print("GG")
+
 
 
 def game_loop():
     '''
     This is the game loop
     '''
-    index = 0
     while not settings.DONE:
         # Input handling (React to key presses, mouse clicks, etc.)
         for event in pygame.event.get():
@@ -268,7 +268,6 @@ def game_loop():
                     elif event.key == pygame.K_SPACE:
                         settings.STAGE = settings.LOST
                 KEYS.append(event.key)
-                index += 1
 
 
 
@@ -287,7 +286,7 @@ def game_loop():
             settings.FLEET.update()
 
         # Game logic (Check for collisions, update points, etc.)
-        game_logic(index)
+        game_logic()
 
         # Drawing code (Describe the picture. It isn't actually drawn yet.)
         draw_stage_playing()

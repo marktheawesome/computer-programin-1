@@ -41,13 +41,21 @@ while running:
 
 
     # Game logic
-    if len(keys) <= len(code) and keys == code:
-        print(keys)
-        print('GG')
+    # if len(keys) <= len(code) and keys == code:
+    #     print(keys)
+    #     print('GG')
 
-    elif keys[index-12:-1] == code:
-        print(keys[index-12:-1])
-        print("You did it.")
+    # elif keys[index-11:] == code:
+    #     print(keys[index-11:])
+    #     print("You did it.")
+
+    if len(keys) > 11:
+        del keys[0]
+        print('though must be shortened')
+        print(keys)
+
+    if keys == code:
+        print("hell yea!")
 
 
     # Drawing code
