@@ -25,9 +25,12 @@ i = 1
 
 def show_video():
     global fileNames, i
-    im = fileNames[i]
+    if i  < len(fileNames):
+        im = fileNames[i]
 
-    im1 = pygame.image.load(im).convert()
-    settings.SCREEN.blit(im1, [0, 0])
+        im1 = pygame.image.load(im).convert()
+        settings.SCREEN.blit(im1, [0, 0])
 
-    i += 1
+        i += 1
+    else:
+        settings.VIEDO_DONE = True

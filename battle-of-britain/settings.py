@@ -80,10 +80,11 @@ def init(): # pylint: disable=too-many-statements
 
 
     # STATS
-    global SHIP_MAX_HEALTH, KILLS_CONFIRMED
+    global SHIP_MAX_HEALTH, KILLS_CONFIRMED, VIEDO_DONE, CODE
 
     SHIP_MAX_HEALTH = 100
     KILLS_CONFIRMED = 0
+    CODE = False
 
 
     # Stages
@@ -96,19 +97,19 @@ def init(): # pylint: disable=too-many-statements
     LOST = 3
     WIN = 4
 
+
     STAGE = START
 
     DONE = False
 
     SHOW_VIEDO = False
+    VIEDO_DONE = False
 
 
     # Levels
-    global LEVEL, LEVEL1
+    global LEVEL
 
     LEVEL = 0
-    LEVEL1 = 1
-
 
     # Money
     global MONEY

@@ -1,1 +1,1 @@
-f
+pygame.init()

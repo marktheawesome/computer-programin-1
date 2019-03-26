@@ -243,6 +243,15 @@ class Fleet():
         for mob in self.mobs:
             mob.rect.y += self.drop_speed
 
+    def speed_up(self):
+        '''
+        make the ships move faster.
+        '''
+        if settings.PLAYING_FRAME % 600 == 0: # every 10 secounds
+            self.speed += 1
+        if settings.PLAYING_FRAME % 1800 == 0: # every 30 secounds
+            self.bomb_rate -= 1
+
     def choose_bomber(self):
         '''
         This will randoly choose which bomber will shoot,
@@ -262,6 +271,8 @@ class Fleet():
         if settings.STAGE == settings.PLAYING:
             self.move()
             self.choose_bomber()
+            self.speed_up()
+            print(self.speed)
 
         elif settings.STAGE == settings.LOST:
             self.move_down()

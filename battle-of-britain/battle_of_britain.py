@@ -1,5 +1,5 @@
 '''
-Space Wars is a take on the old classic game space invaders.
+battle of britan is a creative take on the real battle.
 '''
 # pylint: disable=import-error
 # pylint: disable=wrong-import-position
@@ -41,7 +41,7 @@ def setup():
     num_planes = 100
     for i in range(num_planes):
         x_3 = random.randrange(100, settings.WIDTH-100)
-        y_3 = random.randrange(-10000, -100)
+        y_3 = random.randrange(-1000, -100)
         _p = [x_3, y_3]
         settings.MOBS.add(game_objects.Mob(x_3, y_3, settings.ENEMY_IMG))
         i = i
