@@ -10,11 +10,14 @@ import math
 import pygame
 import settings
 import viedo
+import game_objects
+
 
 viedo.init()
 
 global NEW_HEIGHT, KEYS
 KEYS = []
+NEW_HEIGHT = settings.HEIGHT * (-1/4)
 
 
 # Game helper functions
@@ -31,8 +34,6 @@ def show_title_screen():
                                       (settings.HEIGHT/2) - (title_text_height/ 2)])
 
 
-NEW_HEIGHT = settings.HEIGHT * (-1/4)
-
 def show_lost_screen():
     '''
     This will show the lost screen.
@@ -43,28 +44,6 @@ def show_lost_screen():
     title_text_r = settings.FONT_XL.render("GAME OVER", 1, settings.RED)
     title_text_width = title_text.get_width()
     title_text_height = title_text.get_height()
-
-
-    # for _m in settings.MOBS:
-    #     if _m.rect.y - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 -
-    #                                                            title_text_height/2):
-    #         text_height = _m.rect.y -settings.HEIGHT - title_text_height
-    #         text_width = (settings.WIDTH/2) - (title_text_width/2)
-
-    #         settings.SCREEN.blit(title_text, [text_width, text_height])
-
-    #     else:
-    #         if settings.LOST_FRAME >= 200 and settings.ALFA <= 255:
-    #             settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
-    #                                               settings.HEIGHT/2 - title_text_height/2])
-    #             settings.SUFACE.blit(title_text_r, [(settings.WIDTH/2) - (title_text_width/2),
-    #                                                 settings.HEIGHT/2 - title_text_height/2])
-    #         else:
-    #             settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
-    #                                               settings.HEIGHT/2 - title_text_height/2])
-
-    #     break
-
 
     if NEW_HEIGHT - settings.HEIGHT - title_text_height <= (settings.HEIGHT/2 -
                                                             title_text_height/2):
@@ -92,6 +71,8 @@ def show_lost_screen():
     settings.SUFACE.set_alpha(settings.ALFA)
 
     settings.SCREEN.blit(settings.SUFACE, (0, 0))
+    if settings.LOST_FRAME == 1200:
+        settings.STAGE = settings.END
 
 
 def show_win_screen():
@@ -105,6 +86,28 @@ def show_win_screen():
     title_text_height = title_text.get_height()
     settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
                                       settings.HEIGHT - title_text_height])
+    settings.STAGE = settings.END
+
+
+
+def show_end_screen():
+    '''
+    This will show the start screen.
+    '''
+    settings.SCREEN.fill(settings.BLACK)
+    title_text = settings.FONT_XL.render("Would you like to replay?", 1, settings.WHITE)
+    title_text_width = title_text.get_width()
+    title_text_height = title_text.get_height()
+
+    settings.SCREEN.blit(title_text, [(settings.WIDTH/2) - (title_text_width/2),
+                                      (settings.HEIGHT/2) - (title_text_height/ 2)])
+
+    under_title_text = settings.FONT_MD.render("Press any button.", 1, settings.WHITE)
+    under_title_text_width = under_title_text.get_width()
+    under_title_text_height = under_title_text.get_height()
+
+    settings.SCREEN.blit(under_title_text, [(settings.WIDTH/2) - (under_title_text_width/2),
+                                      (settings.HEIGHT/2) + (title_text_height/2)])
 
 
 def show_stats():
@@ -194,6 +197,7 @@ def game_logic():
 
     if not settings.MOBS or settings.VIEDO_DONE:
         settings.STAGE = settings.WIN
+
     if not settings.CODE:
         check_code()
 
@@ -243,6 +247,31 @@ def check_code():
         print("GG")
 
 
+def setup():
+    '''
+    this sets up the whole thing.
+    '''
+    # ''' add ship to player sprite groupe '''
+    settings.PLAYER.add(settings.SHIP)
+
+    mob_x_scale = 200
+    mob_y_scale = 75
+
+    for _x in range(100, settings.WIDTH-100, mob_x_scale):
+        # makes y value for the location, based on scale
+        for _y in range(-0, 300, mob_y_scale):
+            # adds the enemy to the class
+            settings.MOBS.add(game_objects.Mob(_x, _y, settings.ENEMY_IMG))
+
+
+    num_planes = 100
+    for i in range(num_planes):
+        x_3 = random.randrange(100, settings.WIDTH-100)
+        y_3 = random.randrange(-1000, -100)
+        _p = [x_3, y_3]
+        settings.MOBS.add(game_objects.Mob(x_3, y_3, settings.ENEMY_IMG))
+        i = i
+
 
 def game_loop():
     '''
@@ -267,8 +296,13 @@ def game_loop():
 
                     elif event.key == pygame.K_SPACE:
                         settings.STAGE = settings.LOST
-                KEYS.append(event.key)
 
+                if settings.STAGE == settings.END:
+                    if event.key:
+                        settings.STAGE = settings.RESTART
+
+
+                KEYS.append(event.key)
 
 
         # ''' poll key states '''
@@ -300,11 +334,22 @@ def game_loop():
 
         elif settings.STAGE == settings.WIN:
             show_win_screen()
+            # time.sleep(3)
+            settings.STAGE = settings.END
+
+        elif settings.STAGE == settings.END:
+            show_end_screen()
 
         settings.FRAME_NUMBER += 1
 
+        if settings.STAGE == settings.RESTART:
+            settings.init()
+            settings.STAGE = settings.START
+            setup()
+
 
         # Update screen (Actually draw the picture in the window.)
+        print(settings.STAGE)
         pygame.display.flip()
 
 

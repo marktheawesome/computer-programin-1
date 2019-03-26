@@ -45,9 +45,9 @@ def init(): # pylint: disable=too-many-statements
     # Fonts
     global FONT_SM, FONT_MD, FONT_LG, FONT_XL
 
-    FONT_SM = pygame.font.Font(None, 24)
-    FONT_MD = pygame.font.Font(None, 32)
-    FONT_LG = pygame.font.Font(None, 64)
+    FONT_SM = pygame.font.Font("assets/fonts/times.ttf", 24)
+    FONT_MD = pygame.font.Font("assets/fonts/times.ttf", 32)
+    FONT_LG = pygame.font.Font("assets/fonts/times.ttf", 64)
     FONT_XL = pygame.font.Font("assets/fonts/times.ttf", 96)
 
 
@@ -88,7 +88,7 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Stages
-    global START, PLAYING, END, LOST, WIN, STAGE, DONE, SHOW_VIEDO
+    global START, PLAYING, END, LOST, WIN, STAGE, DONE, SHOW_VIEDO, RESTART
 
 
     START = 0
@@ -96,7 +96,7 @@ def init(): # pylint: disable=too-many-statements
     END = 2
     LOST = 3
     WIN = 4
-
+    RESTART = 5
 
     STAGE = START
 

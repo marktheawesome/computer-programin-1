@@ -61,7 +61,7 @@ class Ship(pygame.sprite.Sprite):
         hit_list = pygame.sprite.spritecollide(self, settings.BOMBS,
                                                True, pygame.sprite.collide_mask)
         if hit_list:
-            print('Outch')
+            # print('Outch')
             self.heath -= 10
 
 
@@ -197,7 +197,7 @@ class Fleet():
         self.speed = 3
         self.moving_right = True
         self.drop_speed = 5
-        self.bomb_rate = 60
+        self.bomb_rate = 3
 
     def move(self):
         '''
@@ -272,7 +272,7 @@ class Fleet():
             self.move()
             self.choose_bomber()
             self.speed_up()
-            print(self.speed)
+            # print(self.speed)
 
         elif settings.STAGE == settings.LOST:
             self.move_down()
