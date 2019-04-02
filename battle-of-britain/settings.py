@@ -14,8 +14,10 @@ def init(): # pylint: disable=too-many-statements
     # Window
     global WIDTH, HEIGHT, SIZE, TITLE, SCREEN
 
-    WIDTH = 1280
-    HEIGHT = 720
+    info_object = pygame.display.Info()
+
+    WIDTH = info_object.current_w
+    HEIGHT = info_object.current_h - 55
     SIZE = (WIDTH, HEIGHT)
     TITLE = "Battle of Britain"
     SCREEN = pygame.display.set_mode(SIZE)
@@ -52,7 +54,7 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Images
-    global SHIP_IMG, LASER_IMG, ENEMY_IMG, BOMB_IMG
+    global SHIP_IMG, LASER_IMG, ENEMY_IMG, BOMB_IMG, FLACK_TOWER_IMG
     global EXPLOSION, BACKGROUND_IMG, FIREBALL_IMG, UNION_JACK_IMG
     global END_GAME_IMG
 
@@ -65,6 +67,8 @@ def init(): # pylint: disable=too-many-statements
     FIREBALL_IMG = pygame.image.load('assets/images/fireball-effect.png').convert_alpha()
     UNION_JACK_IMG = pygame.image.load('assets/images/UnionJack.png').convert()
     END_GAME_IMG = pygame.image.load('assets/images/nuckler.jpeg').convert()
+    FLACK_TOWER_IMG = pygame.image.load('assets/images/flak_tower.png').convert_alpha()
+    FLACK_TOWER_IMG = pygame.transform.scale(FLACK_TOWER_IMG, (50, 50))
 
     # Sounds
     global EXPLOSION_SOUND, SHOOT_SOUND, A_10_SOUND, END_GAME_SOUND, PLAYED_END_GAME
@@ -118,12 +122,12 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Objects
-    global PLAYER, LASERS, MOBS, FLEET, BOMBS, SHIP, FIREBALL, TEMP_MOB
+    global PLAYER, LASERS, MOBS, FLEET, BOMBS, SHIP, FIREBALL, BULLETS, TEMP_MOB, SENTRYS, FLEET2
 
 
     rect = SHIP_IMG.get_rect()
     rect_x = rect.centerx
-    rect_y = rect.bottom
+    rect_y = rect.height
     SHIP = game_objects.Ship(WIDTH/2-rect_x, HEIGHT-rect_y, SHIP_IMG)
 
 
@@ -131,9 +135,13 @@ def init(): # pylint: disable=too-many-statements
     LASERS = pygame.sprite.Group()
     BOMBS = pygame.sprite.Group()
     FIREBALL = pygame.sprite.Group()
+    BULLETS = pygame.sprite.Group()
     MOBS = pygame.sprite.Group()
     FLEET = game_objects.Fleet(MOBS)
     TEMP_MOB = pygame.sprite.Group()
+
+    SENTRYS = pygame.sprite.Group()
+    FLEET2 = game_objects.Fleet2(SENTRYS)
 
 
     # counter
@@ -142,6 +150,7 @@ def init(): # pylint: disable=too-many-statements
     PLAYING_FRAME = 0
     LOST_FRAME = 0
     FRAME_NUMBER = 0
+
 
 
     # Surface

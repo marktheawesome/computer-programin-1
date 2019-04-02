@@ -2,6 +2,7 @@
 This file will contain all the game objects (classes). To make main file easer to read.
 '''
 # pylint: disable=import-error
+import math
 import random
 import pygame
 import settings
@@ -139,6 +140,14 @@ class Mob(pygame.sprite.Sprite):
         if not self.rect.bottom < 0:
             hit_list = pygame.sprite.spritecollide(self, settings.LASERS,
                                                    True, pygame.sprite.collide_mask)
+
+        for bullet in settings.BULLETS:
+            if bullet.reverse:
+                hit_list_2 = pygame.sprite.spritecollide(self, settings.BULLETS,
+                                                         True, pygame.sprite.collide_mask)
+                if hit_list_2:
+                    settings.KILLS_CONFIRMED += 1
+                    self.kill()
         if hit_list:
             settings.KILLS_CONFIRMED += 1
             self.after_death()
@@ -279,3 +288,169 @@ class Fleet():
 
         else:
             pass
+
+class Sentry(pygame.sprite.Sprite):
+    def __init__(self, x, y, image):
+        super().__init__()
+
+        self.image = image
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+        self.lives = 10
+
+    def drop_bullet(self):
+        bullet = Bullet(settings.BOMB_IMG)
+        bullet.rect.centerx = self.rect.centerx
+        bullet.rect.centery = self.rect.bottom
+        settings.BULLETS.add(bullet)
+
+        settings.SHOOT_SOUND.play()
+
+    def update(self):
+        hit_list = pygame.sprite.spritecollide(self, settings.BOMBS, True, pygame.sprite.collide_mask)
+        temp = random.randrange(0, 200)
+        if len(hit_list) > 0:
+            self.lives -= 1
+            if self.lives == 0:
+                settings.KILLS_CONFIRMED += 1
+                self.kill()
+        if temp == 42:
+            self.drop_bullet()
+
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, image):
+        super().__init__()
+
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.speed = 5
+        self.theta = None
+        self.dis_dis = None
+        self.perception_rad = 75.0
+        self.velocity = []
+        self.reverse = False
+    def shoot(self):
+        settings.SHOOT_SOUND.play()
+
+    def find_theta(self):
+
+        dis_x = settings.SHIP.rect.centerx - self.rect.centerx
+        dis_y = settings.SHIP.rect.centery - self.rect.centery
+        self.dis_dis = math.sqrt((dis_x**2 + dis_y**2))
+
+        if self.dis_dis == 0:
+            # Mark Gyomory
+            self.kill()
+        else:
+            self.theta = math.asin(dis_x/self.dis_dis)
+
+        self.find_velocity()
+
+    def find_velocity(self):
+        vx = math.sin(self.theta) * self.speed
+        # Mark Gyomory
+        vy = math.cos(self.theta) * self.speed
+        self.velocity = [vx, vy]
+
+
+    def update(self):
+        self.find_theta()
+        if self.dis_dis > self.perception_rad and not self.reverse :
+            pass
+        else:
+            self.reverse = True
+            self.velocity[0] *= -1
+            self.velocity[1] *= -1
+
+        self.rect.x += self.velocity[0]
+        self.rect.y += self.velocity[1]
+
+
+        self.image = pygame.transform.rotate(settings.BOMB_IMG, math.degrees(self.theta))
+
+        if self.rect.bottom > settings.HEIGHT:
+            self.kill()
+
+
+class Fleet2():
+    def __init__(self, mobs):
+        self.mobs = mobs
+        self.speed = 5
+        self.moving_right = True
+        self.move_down_num = 7
+        self.bombing_rate = 20 #Lower is faster
+
+        self.make_sentrys()
+
+        self.wave_num = 1
+
+    def move(self):
+        hits_edge = False
+
+        for m in settings.MOBS:
+            if self.moving_right:
+                m.rect.x += self.speed
+
+                if m.rect.right >= settings.WIDTH:
+                    hits_edge = True
+
+            else:
+                m.rect.x -= self.speed
+
+                if m.rect.left <= 0:
+                    hits_edge = True
+        if hits_edge:
+            self.reverse()
+            self.move_down()
+
+    def reverse(self):
+        self.moving_right = not self.moving_right
+
+    def move_down(self):
+        for m in settings.MOBS:
+            m.rect.y += self.move_down_num
+
+    def choose_bomber(self):
+        rand = random.randrange(self.bombing_rate)
+        mob_list = settings.MOBS.sprites()
+
+        if len(mob_list) > 0 and rand == 0:
+            bomber = random.choice(mob_list)
+            bomber.drop_bomb()
+
+
+    def make_sentrys(self):
+        settings.SENTRYS.add(Sentry(50, settings.HEIGHT * (4/10), settings.FLACK_TOWER_IMG))
+        settings.SENTRYS.add(Sentry(settings.WIDTH - 100, settings.HEIGHT * (4/10), settings.FLACK_TOWER_IMG))
+
+
+    def kill(self):
+        for a in settings.MOBS():
+            self.kill()
+
+    def update(self):
+        if len(settings.MOBS) == 0:
+            self.wave_num += 1
+            self.bombing_rate -= 3
+            if self.bombing_rate <= 0:
+                self.bombing_rate = 1
+
+            self.move_down_num += 3
+            if self.move_down_num <= 0:
+                self.move_down_num = 1
+
+            self.make_sentrys()
+
+        for m in settings.MOBS:
+            if m.rect.bottom >= settings.HEIGHT - 150:
+                settings.PLAYER.heath = 0
+
+        if settings.PLAYER.heath <= 0:
+            self.mobs.empty()
+
+        self.move()
+        self.choose_bomber()

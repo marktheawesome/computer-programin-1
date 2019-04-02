@@ -34,3 +34,4 @@ def show_video():
         i += 1
     else:
         settings.VIEDO_DONE = True
+

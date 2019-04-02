@@ -71,7 +71,7 @@ def show_lost_screen():
     settings.SUFACE.set_alpha(settings.ALFA)
 
     settings.SCREEN.blit(settings.SUFACE, (0, 0))
-    if settings.LOST_FRAME == 1200:
+    if settings.LOST_FRAME == 600:
         settings.STAGE = settings.END
 
 
@@ -89,7 +89,6 @@ def show_win_screen():
     settings.STAGE = settings.END
 
 
-
 def show_end_screen():
     '''
     This will show the start screen.
@@ -104,21 +103,27 @@ def show_end_screen():
 
     under_title_text = settings.FONT_MD.render("Press any button.", 1, settings.WHITE)
     under_title_text_width = under_title_text.get_width()
-    under_title_text_height = under_title_text.get_height()
+    # under_title_text_height = under_title_text.get_height()
 
     settings.SCREEN.blit(under_title_text, [(settings.WIDTH/2) - (under_title_text_width/2),
-                                      (settings.HEIGHT/2) + (title_text_height/2)])
+                                            (settings.HEIGHT/2) + (title_text_height/2)])
 
 
 def show_stats():
     '''
     will blit player heath of screen.
     '''
-    _hp = settings.FONT_MD.render(str(settings.SHIP.heath), 1, settings.WHITE)
+
+    fps = settings.FONT_SM.render(str(int(settings.CLOCK.get_fps())),
+                                  True, pygame.Color('green'))
+
+    # _hp = settings.FONT_MD.render(str(settings.SHIP.heath), 1, settings.WHITE)
     _kc = settings.FONT_MD.render(str(settings.KILLS_CONFIRMED), 1, settings.WHITE)
 
-    settings.SCREEN.blit(_hp, [0, 0])
+    # settings.SCREEN.blit(_hp, [0, 0])
+    settings.SCREEN.blit(fps, (0 + fps.get_width(), 0 +  fps.get_height()))
     settings.SCREEN.blit(_kc, [settings.WIDTH-_kc.get_width(), 0])
+
 
 
 def draw_hp():
@@ -143,8 +148,10 @@ def draw_stage_playing():
     settings.LASERS.draw(settings.SCREEN)
     settings.BOMBS.draw(settings.SCREEN)
     settings.PLAYER.draw(settings.SCREEN)
+    settings.SENTRYS.draw(settings.SCREEN)
     settings.MOBS.draw(settings.SCREEN)
     settings.FIREBALL.draw(settings.SCREEN)
+    settings.BULLETS.draw(settings.SCREEN)
     draw_hp()
     show_stats()
 
@@ -184,6 +191,8 @@ def game_logic():
         settings.MOBS.update()
         settings.FIREBALL.update()
         end_game_sound()
+        settings.SENTRYS.update()
+        settings.BULLETS.update()
 
 
     elif settings.STAGE == settings.LOST:
@@ -307,9 +316,10 @@ def game_loop():
 
         # ''' poll key states '''
         _state = pygame.key.get_pressed()
-        _a = _state[pygame.K_a]
-        _s = _state[pygame.K_s]
-        _d = _state[pygame.K_d]
+        if not settings.PLAYED_END_GAME:
+            _a = _state[pygame.K_a]
+            _s = _state[pygame.K_s]
+            _d = _state[pygame.K_d]
 
         if settings.STAGE == settings.PLAYING:
             settings.PLAYING_FRAME += 1
@@ -349,7 +359,10 @@ def game_loop():
 
 
         # Update screen (Actually draw the picture in the window.)
-        print(settings.STAGE)
+
+        fps = settings.FONT_SM.render(str(int(settings.CLOCK.get_fps())),
+                                      True, pygame.Color('green'))
+        settings.SCREEN.blit(fps, (0 + fps.get_width(), settings.HEIGHT - fps.get_height()))
         pygame.display.flip()
 
 
