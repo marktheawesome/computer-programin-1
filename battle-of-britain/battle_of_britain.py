@@ -28,5 +28,6 @@ frame_analysis.make_file()
 # Close window and quit
 pygame.quit()
 
-frame_analysis.analyst()
+STATS = frame_analysis.analyst()
 frame_analysis.graph()
+frame_analysis.tabel(STATS)
