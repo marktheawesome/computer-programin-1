@@ -15,13 +15,18 @@ pygame.init()
 import settings
 settings.init()
 import game_loop
-
+import frame_analysis
 
 
 # Game loop
 game_loop.setup()
 game_loop.game_loop()
 
+# after game loop
+frame_analysis.make_file()
 
 # Close window and quit
 pygame.quit()
+
+frame_analysis.analyst()
+frame_analysis.graph()

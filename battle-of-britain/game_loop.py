@@ -124,6 +124,7 @@ def show_stats():
     settings.SCREEN.blit(fps, (0 + fps.get_width(), 0 +  fps.get_height()))
     settings.SCREEN.blit(_kc, [settings.WIDTH-_kc.get_width(), 0])
 
+    settings.FRAME_RATE.append((int(settings.CLOCK.get_fps())))
 
 
 def draw_hp():
@@ -344,7 +345,6 @@ def game_loop():
 
         elif settings.STAGE == settings.WIN:
             show_win_screen()
-            # time.sleep(3)
             settings.STAGE = settings.END
 
         elif settings.STAGE == settings.END:
@@ -360,9 +360,6 @@ def game_loop():
 
         # Update screen (Actually draw the picture in the window.)
 
-        fps = settings.FONT_SM.render(str(int(settings.CLOCK.get_fps())),
-                                      True, pygame.Color('green'))
-        settings.SCREEN.blit(fps, (0 + fps.get_width(), settings.HEIGHT - fps.get_height()))
         pygame.display.flip()
 
 

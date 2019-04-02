@@ -6,7 +6,6 @@ import math
 import random
 import pygame
 import settings
-# test
 
 class Ship(pygame.sprite.Sprite):
     '''
@@ -289,6 +288,7 @@ class Fleet():
 
         else:
             pass
+
 
 class Sentry(pygame.sprite.Sprite):
     def __init__(self, x, y, image):

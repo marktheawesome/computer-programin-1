@@ -25,10 +25,11 @@ def init(): # pylint: disable=too-many-statements
 
 
     # Timer
-    global CLOCK, REFRESH_RATE
+    global CLOCK, REFRESH_RATE, FRAME_RATE
 
     CLOCK = pygame.time.Clock()
     REFRESH_RATE = 60
+    FRAME_RATE = []
 
     # Colors
     global RED, WHITE, BLACK, YELLOW, GREEN, ALFA
@@ -114,11 +115,6 @@ def init(): # pylint: disable=too-many-statements
     global LEVEL
 
     LEVEL = 0
-
-    # Money
-    global MONEY
-
-    MONEY = 100
 
 
     # Objects
