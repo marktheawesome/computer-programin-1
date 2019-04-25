@@ -83,7 +83,7 @@ def graph():
     plt.plot(tenth_frame, 'go', label='points', linewidth=.1)
     plt.plot(tenth_frame, 'b-', label='line', linewidth=.1)
 
-    plt.title('Fram Rate Over Time')
+    plt.title('Frame Rate Over Time')
     plt.ylabel('Frame Rate')
     plt.xlabel('Frame Number')
     os.chdir("./assets/Stats/" + str(NEW_FOLDER))
