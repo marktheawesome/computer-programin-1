@@ -15,6 +15,11 @@ TITLE = "Name of Game"
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption(TITLE)
 
+world_width = 192 * SCALE
+world_height = 9 * SCALE
+world = pygame.Surface([world_width,world_height])
+world_x = 0
+world_y = 0
 
 # Timer
 clock = pygame.time.Clock()
@@ -47,13 +52,14 @@ hero_img = pygame.image.load('assets/images/characters/platformChar_walk1.png').
 ''' tiles '''
 grass_img = pygame.image.load('assets/images/tiles/platformPack_tile001.png').convert_alpha()
 platform_img = pygame.image.load('assets/images/tiles/platformPack_tile020.png').convert_alpha()
-                  
+
 ''' items '''
 gem_img = pygame.image.load('assets/images/items/platformPack_item008.png').convert_alpha()
 
 
 # Game physics
 GRAVITY = 1
+TERMINAL_VELOCITY = 10
 
 
 # Stages
@@ -72,11 +78,11 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x * SCALE
         self.rect.y = y * SCALE
-        
+
         #bounding_rect = self.mask.get_bounding_rects()
         #print(self.rect, bounding_rect)
 
-    
+
 class Hero(pygame.sprite.Sprite):
     def __init__(self, x, y, image):
         super().__init__()
@@ -93,18 +99,27 @@ class Hero(pygame.sprite.Sprite):
 
     def move_left(self):
         self.vx = -self.speed
-    
+
     def move_right(self):
         self.vx = self.speed
 
     def stop(self):
         self.vx = 0
-    
+
+    def can_jump(self):
+        self.rect.y +=2
+        hit_list = pygame.sprite.spritecollide(self, tiles, False)
+        self.rect.y -= 2
+
+        return len(hit_list)
+
     def jump(self):
-        pass
+        if self.can_jump():
+            self.vy = -self.jump_power
 
     def apply_gravity(self):
-        pass
+        self.vy += GRAVITY
+        self.vy = min(self.vy, TERMINAL_VELOCITY)
 
     def move_and_check_tiles(self):
         ''' move in horizontal direction and resolve colisions '''
@@ -116,7 +131,7 @@ class Hero(pygame.sprite.Sprite):
                 self.rect.right = hit.rect.left
             elif self.vx < 0:
                 self.rect.left = hit.rect.right
-                
+
         ''' move in vertical direction and resolve colisions '''
         self.rect.y += self.vy
         hit_list = pygame.sprite.spritecollide(self, tiles, False)
@@ -128,19 +143,19 @@ class Hero(pygame.sprite.Sprite):
                 self.rect.top = hit.rect.bottom
 
             self.vy = 0
-        
+
     def check_edges(self):
         if self.rect.left < 0:
             self.rect.left = 0
-        elif self.rect.right > WIDTH:
-            self.rect.right = WIDTH
+        elif self.rect.right > world_width:
+            self.rect.right = world_width
 
     def process_items(self):
         pass
 
     def set_image(self):
         pass
-    
+
     def update(self):
         self.apply_gravity()
         self.move_and_check_tiles()
@@ -159,7 +174,7 @@ class Gem(pygame.sprite.Sprite):
 
     def apply(self, player):
         pass
-        
+
     def update(self):
         pass
 
@@ -167,23 +182,31 @@ class Gem(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     pass
 
-    
+
 # Game helper functions
 def show_title_screen():
     text = FONT_XL.render(TITLE, 1, WHITE)
     screen.blit(text, [128, 204])
-    
+
 def show_end_screen():
     text = FONT_LG.render("You Win", 1, WHITE)
     screen.blit(text, [128, 204])
 
+def calculate_offset():
+    x = -1 * hero.rect.centerx  + (WIDTH/2)
+
+    if x >= 0:
+        return 0, 0
+    else:
+        return x, 0
+
 def show_stats():
     text = FONT_LG.render(str(player.score), 1, WHITE)
     screen.blit(text, [20, 20])
-       
+
 def setup():
     global hero, player, tiles, items, stage
-    
+
     ''' Make sprites '''
     hero = Hero(3, 7, hero_img)
 
@@ -215,7 +238,7 @@ def setup():
     i1 = Gem(13, 7, gem_img)
     i2 = Gem(6, 4, gem_img)
     i3 = Gem(11, 2, gem_img)
-    
+
     ''' Make sprite groups '''
     player = pygame.sprite.GroupSingle()
     items = pygame.sprite.Group()
@@ -227,13 +250,13 @@ def setup():
     tiles.add(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16)
     tiles.add(t17, t18, t19)
     tiles.add(t20, t21, t22)
-    
+
     items.add(i1, i2, i3)
-    
+
     ''' set stage '''
     stage = START
 
-    
+
 # Game loop
 setup()
 
@@ -243,12 +266,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            
+
         elif event.type == pygame.KEYDOWN:
             if stage == START:
                 if event.key == pygame.K_SPACE:
                     stage = PLAYING
-                    
+
             elif stage == PLAYING:
                 if event.key == pygame.K_SPACE:
                     hero.jump()
@@ -262,25 +285,27 @@ while running:
             hero.move_right()
         else:
             hero.stop()
-        
-    
+
+
     # Game logic
     if stage == PLAYING:
         player.update()
 
-            
+    world_x , world_y = calculate_offset()
     # Drawing code
-    screen.fill(SKY_BLUE)
-    player.draw(screen)
-    tiles.draw(screen)
-    items.draw(screen)
-        
+    world.fill(SKY_BLUE)
+    player.draw(world)
+    tiles.draw(world)
+    items.draw(world)
+
+    screen.blit(world, [world_x, world_y])
+
     if stage == START:
-        show_title_screen()        
+        show_title_screen()
     elif stage == END:
         show_end_screen()
 
-    
+
     # Update screen
     pygame.display.flip()
     clock.tick(refresh_rate)
