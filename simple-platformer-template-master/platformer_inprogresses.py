@@ -297,7 +297,7 @@ class Game():
         level_data = levels[self.current_level -1] # -1 because list indices are one less than level number
         self.level = Level(level_data)
 
-        world_width, world_height = self.level.get_size()
+        self.world_width, self.world_height = self.level.get_size()
         self.world = pygame.Surface([world_width, world_height])
 
         x, y = self.level.get_start()
@@ -309,6 +309,18 @@ class Game():
 
     def advance(self):
         pass
+
+    #Grid
+    def draw_grid(self):
+        '''
+        Draws a grid that can overlay your picture.
+        This should make it easier to figure out coordinates
+        when drawing pictures.
+        '''
+        for x in range(0, self.world_width, self.scale):
+            pygame.draw.line(self.world, WHITE, [x, 0], [x, self.height], 1)
+        for y in range(0, self.world_height, scale):
+            pygame.draw.line(screen, WHITE, [0, y], [self.world_width, y],1)
 
     def show_title_screen(self):
         text = FONT_LG.render(TITLE, 1, BLACK)
@@ -396,6 +408,7 @@ class Game():
         self.tiles.draw(self.world)
         self.items.draw(self.world)
         self.goal.draw(self.world)
+        self.draw_grid()
         # print(self.items)
 
         offset_x, offset_y = self.calculate_offset()
