@@ -1,4 +1,6 @@
+#pylint: disable-all
 # Imports
+import json
 import pygame
 
 
@@ -31,6 +33,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 SKY_BLUE = (0, 200, 225)
 GREEN = (0, 200, 0)
+
 
 
 # Fonts
@@ -67,6 +70,9 @@ START = 0
 PLAYING = 1
 END = 3
 
+# Levels
+levels = ["level_1.json"]
+level_data =levels[0]
 
 # Game classes
 class Tile(pygame.sprite.Sprite):
@@ -195,10 +201,12 @@ def show_end_screen():
 def calculate_offset():
     x = -1 * hero.rect.centerx  + (WIDTH/2)
 
-    if x >= 0:
-        return 0, 0
-    else:
-        return x, 0
+    if hero.rect.centerx < WIDTH/2:
+        x = 0
+    elif hero.rect.centerx > world_width - WIDTH/2:
+        x = -1 * world_width + WIDTH
+
+    return x, 0
 
 def show_stats():
     text = FONT_LG.render(str(player.score), 1, WHITE)
@@ -226,6 +234,10 @@ def setup():
     t14 = Tile(13, 8, grass_img)
     t15 = Tile(14, 8, grass_img)
     t16 = Tile(15, 8, grass_img)
+    t100 = Tile(16, 8, grass_img)
+    t101 = Tile(17, 8, grass_img)
+    t102 = Tile(18, 8, grass_img)
+    t103 = Tile(19, 8, grass_img)
 
     t17 = Tile(5, 5, platform_img)
     t18 = Tile(6, 5, platform_img)
@@ -247,7 +259,7 @@ def setup():
     ''' Add sprites to groups '''
     player.add(hero)
 
-    tiles.add(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16)
+    tiles.add(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t100, t101, t102 , t103)
     tiles.add(t17, t18, t19)
     tiles.add(t20, t21, t22)
 

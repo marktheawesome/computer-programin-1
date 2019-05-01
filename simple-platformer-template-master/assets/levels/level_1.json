@@ -1,0 +1,107 @@
+{
+	"size": {
+		"scale": 64,
+		"width": 32,
+		"height": 9
+	},
+
+	"physics": {
+		"gravity": 1.0,
+		"terminal_velocity": 24
+	},
+
+	"music": "music_file.ogg",
+
+	"background": {
+		"tiled_image": "image_file1.png",
+		"tiles": [
+			[10, 10, "TileName"],
+			[20, 10, "TileName"],
+			[30, 10, "TileName"]
+		],
+		"parallax_speed": 0.5
+	},
+
+	"midground": {
+		"tiled_image": "image_file1.png",
+		"tiles": [
+			[0, 0, "TileName"],
+			[0, 0, "TileName"],
+			[0, 0, "TileName"]
+		],
+		"parallax_speed": 0.5
+	},
+
+	"foreground": {
+		"tiles": [
+			[0, 0, "TileName"],
+			[0, 0, "TileName"],
+			[0, 0, "TileName"]
+		],
+		"parallax_speed": 0.5
+	},
+
+	"main": {
+		"start_x": 1,
+		"start_y": 6,
+
+		"tiles": [
+
+            [0, 8, "grass_img"],
+            [1, 8, "grass_img"],
+            [2, 8, "grass_img"],
+            [3, 8, "grass_img"],
+            [4, 8, "grass_img"],
+            [5, 8, "grass_img"],
+            [6, 8, "grass_img"],
+            [7, 8, "grass_img"],
+            [8, 8, "grass_img"],
+            [9, 8, "grass_img"],
+            [10, 8, "grass_img"],
+            [11, 8, "grass_img"],
+            [12, 8, "grass_img"],
+            [13, 8, "grass_img"],
+            [14, 8, "grass_img"],
+            [15, 8, "grass_img"],
+            [16, 8, "grass_img"],
+            [17, 8, "grass_img"],
+            [18, 8, "grass_img"],
+			[19, 8, "grass_img"],
+			[20, 8, "grass_img"],
+			[21, 8, "grass_img"],
+			[22, 8, "grass_img"],
+			[23, 8, "grass_img"],
+			[24, 8, "grass_img"],
+			[25, 8, "grass_img"],
+			[26, 8, "grass_img"],
+			[27, 8, "grass_img"],
+			[28, 8, "grass_img"],
+			[29, 8, "grass_img"],
+			[30, 8, "grass_img"],
+			[31, 8, "grass_img"],
+            [5, 5, "platform_img"],
+            [6, 5, "platform_img"],
+            [7, 5, "platform_img"],
+            [10, 3, "platform_img"],
+            [11, 3, "platform_img"],
+            [12, 3, "platform_img"]
+
+		],
+
+		"items": [
+            [13, 7, "gem_img"],
+            [6, 4, "gem_img"],
+            [11, 2, "gem_img"]
+		],
+
+		"enemies": [
+			[0, 0, "EnemyType"],
+			[0, 0, "EnemyType"],
+			[0, 0, "EnemyType"]
+		],
+
+		"goal": [
+			[33, 5, "Fridge"]
+		]
+	}
+}
