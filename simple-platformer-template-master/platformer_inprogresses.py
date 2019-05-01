@@ -1,6 +1,7 @@
 #pylint: disable-all
 # Imports
 import json
+import os
 import pygame
 
 
@@ -51,7 +52,6 @@ GEM_SND = pygame.mixer.Sound('assets/sounds/gem.ogg')
 # Images
 ''' characters '''
 hero_img = pygame.image.load('assets/images/characters/platformChar_walk1.png').convert_alpha()
-thor_img = pygame.image.load('assets/images/characters/fatThor.jpeg')
 
 ''' tiles '''
 grass_img = pygame.image.load('assets/images/tiles/platformPack_tile001.png').convert_alpha()
@@ -74,8 +74,14 @@ WIN = 4
 LOSE = 5
 
 # Levels
-levels = ["assets/levels/level_1.json"]
-level_data =levels[0]
+# levels = ["assets/levels/level_1.json"]
+levels = []
+for level in os.listdir('assets/levels/'):
+
+    levels.append('assets/levels/' + level)
+    levels.sort()
+
+level_data = levels[0]
 
 # Game classes
 class Tile(pygame.sprite.Sprite):
@@ -183,8 +189,8 @@ class Gem(pygame.sprite.Sprite):
 
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.x = x * SCALE
-        self.rect.y = y * SCALE
+        self.rect.x = x
+        self.rect.y = y
 
     def apply(self, player):
         pass
@@ -288,7 +294,7 @@ class Game():
         self.current_level = 1
 
     def load_level(self):
-        level_data = levels[0] # -1 because list indices are one less than level number
+        level_data = levels[self.current_level -1] # -1 because list indices are one less than level number
         self.level = Level(level_data)
 
         world_width, world_height = self.level.get_size()
@@ -390,17 +396,20 @@ class Game():
         self.tiles.draw(self.world)
         self.items.draw(self.world)
         self.goal.draw(self.world)
-        # print(self.tiles)
+        # print(self.items)
 
         offset_x, offset_y = self.calculate_offset()
         screen.blit(self.world, [offset_x, offset_y])
 
         if self.stage == START:
             self.show_title_screen()
+
         elif self.stage == CLEARED:
             self.show_cleared_screen()
+
         elif self.stage == WIN:
             self.show_win_screen()
+
         elif self.stage == LOSE:
             self.show_lose_screen()
 

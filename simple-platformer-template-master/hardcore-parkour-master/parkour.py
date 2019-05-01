@@ -333,7 +333,7 @@ class Game():
     def process_input(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                self.running = False
 
             elif event.type == pygame.KEYDOWN:
                 if self.stage == START:
@@ -372,7 +372,6 @@ class Game():
         self.tiles.draw(self.world)
         self.items.draw(self.world)
         self.goal.draw(self.world)
-        print(self.tiles)
 
         offset_x, offset_y = self.calculate_offset()
         screen.blit(self.world, [offset_x, offset_y])
