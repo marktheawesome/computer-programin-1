@@ -266,7 +266,7 @@ class Level():
             self.goal.add(s)
 
     def get_size(self):
-        return self.width, self.height
+        return self.width, self.height, self.scale
 
     def get_start(self):
         return self.start_x, self.start_y
@@ -297,7 +297,7 @@ class Game():
         level_data = levels[self.current_level -1] # -1 because list indices are one less than level number
         self.level = Level(level_data)
 
-        self.world_width, self.world_height = self.level.get_size()
+        self.world_width, self.world_height, self.scale = self.level.get_size()
         self.world = pygame.Surface([world_width, world_height])
 
         x, y = self.level.get_start()
